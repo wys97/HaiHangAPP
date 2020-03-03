@@ -1,0 +1,76 @@
+@import "./assets/px2rem.scss";
+
+.airTicket{
+    width: 100%;
+   padding-top: px2rem(50);
+}
+
+.header {
+    width: 100%;
+    height: px2rem(44);
+    position: relative;
+    font-size: 17px;
+    line-height: 44px;
+    color: #444d54;
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: bolder;
+    background: rgba(255, 255, 255, 0.82);
+  
+    h1 {
+      width: 100%;
+      text-align: center;
+      display: inline-block;
+    }
+  
+    img {
+      display: inline-block;
+      height: 24px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
+   
+}
+.content{
+    text-align: center;
+    padding: px2rem(56) px2rem(38) 0;
+    font-size: px2rem(14);
+    color: #909090;
+    img{
+        width: px2rem(100);
+        height: px2rem(60);
+    }
+    .hint{
+        font-size: px2rem(16);
+        margin: px2rem(32);
+        text-align: center;
+        p{
+            margin: 4px 0;
+        }
+    }
+    .placeholder{
+        margin-top: px2rem(83);
+        height: 1px;
+        width: px2rem(300);
+        background: #E9E9E9 ;
+    }
+    .feature{
+        text-align: left;
+     
+        .title{
+            margin: px2rem(16) 0;
+        }
+        p{
+            line-height: 20px;
+        }
+        .content2{
+            margin-top: 10px;
+        }
+    }
+}
+
+.am-navbar-light .am-navbar-title{
+    color: #444d54;
+    font-size: 17px;
+}

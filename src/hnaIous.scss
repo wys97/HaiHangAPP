@@ -1,0 +1,224 @@
+@import "./assets/px2rem.scss";
+.hnaIous {
+  position: relative;
+
+  .banner {
+    width: 100%;
+    height: 250px;
+    background: url("./assets/image/banner.png") no-repeat;
+    background-size: 100%;
+  }
+
+  .maxLimit {
+    position: absolute;
+    top: 250px;
+    left: 23px;
+    height: 194px;
+    background: #ffffff;
+    border: 1px solid #f1f1f1;
+    border-radius: 6px;
+
+    p {
+      font-size: 14px;
+      color: #444d54;
+      line-height: 20px;
+      text-align: center;
+      margin: px2rem(27) 0 px2rem(20) 0;
+    }
+    span {
+      display: block;
+      font-size: 40px;
+      color: #454f55;
+      text-align: center;
+      font-weight: bolder;
+    }
+
+    div {
+      width: px2rem(228);
+      height: 1px;
+      background: #e35b51;
+      border-radius: 3.5px;
+      margin: px2rem(8) px2rem(51) px2rem(34) px2rem(51);
+    }
+
+    b {
+      display: block;
+      text-align: center;
+      line-height: 14px;
+      font-size: 10px;
+      color: #9b9b9b;
+    }
+  }
+
+  .my-radio {
+    position: absolute;
+    bottom: 84px;
+    width: 100%;
+    font-size: 12px;
+    line-height: 17px;
+    color: #454f55;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      height: 15px;
+      margin-right: 5px;
+    }
+
+    span {
+      font-size: 12px;
+      letter-spacing: 0;
+      line-height: 17px;
+
+      b {
+        color: #e1514c;
+      }
+    }
+    .protocol {
+      color: #e1514c;
+      text-align: center;
+    }
+  }
+
+  .next {
+    display: block;
+    background: #e1514c;
+    width: px2rem(319);
+    height: px2rem(44);
+    border: none;
+    border-radius: 16px 0 16px 0;
+    position: absolute !important;
+    left: 28px;
+    bottom: 26px;
+    color: #fff;
+    font-size: 17px;
+    line-height: 44px;
+    text-align: center;
+  }
+  .next::before {
+    border: none !important;
+  }
+
+  .am-button-disabled {
+    background: #bdbdbd;
+  }
+}
+
+.am-modal-wrap {
+  .am-modal-header {
+    .am-modal-title {
+      margin-top: px2rem(10);
+      font-size: 17px;
+      color: #444d54;
+      letter-spacing: -0.41px;
+      text-align: center;
+      font-weight: 900;
+    }
+  }
+  .am-modal-title {
+    height: 22px;
+    line-height: 22px;
+  }
+  .am-modal-popup {
+    height: 80%;
+  }
+  .am-modal-body {
+    color: #444d54;
+    overflow: auto;
+
+    .modal_content {
+      position: fixed;
+      top: 28%;
+      bottom: 0;
+      overflow-y: scroll;
+      width: px2rem(345);
+      height: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .title {
+      margin: 0 px2rem(15);
+      position: fixed;
+      bottom: 44px;
+    }
+    .footer {
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      height: 44px;
+      background: #fff;
+      -webkit-overflow-scroll: touch;
+
+      .no {
+        display: inline-block;
+        text-align: center;
+        font-size: 17px;
+        line-height: 17px;
+        letter-spacing: -0.41px;
+        padding: 13.5px 0;
+        border: 1px solid #f1f1f1;
+        flex: 1;
+        color: #444d54;
+        width: 50%;
+      }
+      .yes {
+        width: 50%;
+        text-align: center;
+        display: inline-block;
+        background: #e1514c;
+        font-size: 17px;
+        line-height: 17px;
+        color: #ffffff;
+        letter-spacing: -0.41px;
+        padding: 13.5px 0;
+        flex: 1;
+        border-radius: 0;
+      }
+      .yes::before {
+        border: none !important;
+      }
+      .am-button-disabled {
+        background: #bdbdbd;
+      }
+    }
+  }
+}
+
+//合同
+.modal_content {
+  width: 100%;
+  overflow-y: scroll;
+
+  .modal_title {
+    line-height: 24px;
+    text-align: center;
+  }
+  .title_r {
+    text-align: right;
+  }
+  .title_l {
+    text-align: left;
+  }
+  .modal_c {
+    text-align: left;
+    font-size: 14px;
+    padding-bottom: 100px;
+    text-indent: 25px;
+  }
+}
+
+.am-navbar-light .am-navbar-title {
+  color: #444d54;
+  font-size: 17px;
+}
+.am-modal-close {
+  top: px2rem(10);
+
+  .am-modal-close-x {
+    margin: px2rem(3);
+  }
+}

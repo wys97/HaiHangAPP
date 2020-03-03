@@ -1,0 +1,307 @@
+@import "../../assets/px2rem.scss";
+
+.headers {
+  padding: px2rem(30) px2rem(16) px2rem(20);
+  color: #444d54;
+  font-size: 24px;
+}
+.notice-disable {
+  display: none;
+}
+
+.notice {
+  height: px2rem(30);
+  background: #fdf6f6;
+  // margin-top: 10px;
+  position: relative;
+
+  .news {
+    width: px2rem(10);
+    display: inline-block;
+    position: absolute;
+    top: px2rem(9);
+    left: px2rem(18);
+  }
+  .close {
+    width: px2rem(10);
+    display: inline-block;
+    position: absolute;
+    top: px2rem(10);
+    right: px2rem(17);
+  }
+  .notice-board {
+    width: px2rem(300) !important;
+    margin-left: px2rem(35);
+    .v-item {
+      font-size: 12px;
+      color: #e1514c;
+      line-height: 12px;
+      height: 30px;
+      padding: px2rem(9) 0;
+    }
+  }
+}
+.am-notice-bar {
+  margin-top: px2rem(10);
+
+  .news {
+    width: px2rem(19);
+  }
+}
+.creditInformation {
+  display: flex;
+  flex-direction: column;
+  height: px2rem(200);
+  margin: px2rem(10) px2rem(15) px2rem(20);
+  background: url("../../assets/image/creditInformation.png") no-repeat;
+  background-size: 100%;
+  border-radius: 6px;
+  color: #fff;
+  position: relative;
+
+  .img {
+    margin: px2rem(27) 0 px2rem(11) px2rem(152);
+    height: px2rem(36);
+    width: px2rem(38);
+  }
+
+  .creditInformation-creditExpired {
+    width: 100%;
+    font-size: px2rem(16);
+    line-height: px2rem(18);
+    text-align: center;
+  }
+
+  .creditInformation-creditExpiredtitle {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: px2rem(12);
+    line-height:px2rem(17);
+
+    b {
+      color: #ffd667;
+    }
+  }
+
+  .freeze {
+    height: 26px;
+    background: #ffd667;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    line-height: 26px;
+    border-radius: 0 6px 0 0;
+    position: absolute;
+    padding: 0 px2rem(5);
+    top: 0;
+    right: 0;
+  }
+
+  .creditInformation-header {
+    display: inline-block;
+    margin: px2rem(34) 0 px2rem(6) 0;
+    width: 100%;
+    font-size: px2rem(12);
+    line-height: px2rem(17);
+    text-align: center;
+  }
+
+  .creditInformation-header-enabled {
+    width: 100%;
+    display: inline-block;
+    font-size: px2rem(12);
+    line-height: px2rem(17);
+    text-align: center;
+    margin: px2rem(24) 0 px2rem(6) 0;
+  }
+
+  .creditInformation-sum {
+    display: inline-block;
+    font-size: px2rem(30);
+    line-height: px2rem(37);
+    text-align: center;
+    font-weight: bolder;
+    width: 100%;
+    margin-bottom:px2rem(8);
+    font-family: 'HelveticaNeue-Medium';
+  }
+  .creditInformation-limit { 
+    text-align: center;
+    width: 100%;
+    font-size: px2rem(12);
+    line-height: px2rem(17);
+
+    span {
+      color: #ffd667;
+    }
+  }
+
+  i {
+    display: block;
+    background: #fff;
+    width: px2rem(126);
+    border: none;
+    border-radius: 16px 0 16px 0;
+    margin: px2rem(11) auto;
+    padding: 10px 0;
+    line-height: 14px;
+    color: #e1514c;
+    font-size: 14px;
+    text-align: center;
+  }
+  .enabled-i {
+    display: block;
+    background: #fff;
+    width: px2rem(126);
+    border: none;
+    border-radius: 16px 0 16px 0;
+    margin: px2rem(11) auto;
+    padding: 10px 0;
+    color: #e1514c;
+    font-size: 14px;
+    padding: px2rem(10);
+    text-align: center;
+  }
+
+  .creditInformation-title {
+    display: inline-block;
+    font-size: px2rem(12);
+    line-height: px2rem(18);
+    height: px2rem(18);
+    width: 100%;
+    text-align: center;
+
+    img {
+      width: px2rem(12);
+      display: inline-block;
+      margin-right: 3px;
+      vertical-align: middle;
+    }
+
+    p {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    span {
+      color: #ffd667;
+    }
+  }
+}
+.airlineTicket {
+  ul {
+    display: flex;
+    justify-content: space-around;
+    margin-top: px2rem(20);
+    margin-bottom: px2rem(24);
+
+    li {
+      div {
+        display: flex;
+        flex-direction: column;
+
+        img {
+          display: block;
+          width: px2rem(50);
+          height: px2rem(50);
+          margin: 0 auto;
+        }
+
+        p {
+          font-size: 14px;
+          line-height: 20px;
+          color: #444d54;
+          margin-top: px2rem(9);
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+.banner {
+  margin: px2rem(24) px2rem(15);
+  height: 70px;
+
+  .slider {
+    height: 70px !important;
+
+    .slider-frame {
+      height: 70px !important;
+
+      .slider-list {
+        height: 60px !important;
+
+        a {
+          display: inline-block;
+          width: px2rem(345);
+
+          img {
+            width: px2rem(345);
+            height: px2rem(60);
+            border-radius: px2rem(30);
+            margin-bottom: px2rem(24);
+            vertical-align: top;
+          }
+        }
+      }
+    }
+
+    .slider-decorator-0 {
+      bottom: -5px !important;
+
+      .am-carousel-wrap {
+        .am-carousel-wrap-dot {
+          span {
+            width: 3px;
+            height: 3px;
+          }
+        }
+        .am-carousel-wrap-dot-active {
+          span {
+            background: #e1514c;
+            width: 8px;
+            height: 3px;
+            border-radius: 30%;
+          }
+        }
+      }
+    }
+  }
+}
+.welfare {
+  h2 {
+    font-size: 16px;
+    margin-left: px2rem(16);
+    line-height: 22px;
+    color: #444d54;
+  }
+
+  .welfare-title {
+    margin-top: px2rem(12);
+    margin-bottom: px2rem(19);
+    ul {
+      display: flex;
+      justify-content: space-around;
+      margin: 0 px2rem(15);
+
+      li {
+        img {
+          display: inline-block;
+          width: px2rem(105);
+          height: px2rem(80);
+        }
+      }
+    }
+  }
+}
+
+.am-tab-bar-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 10000;
+}

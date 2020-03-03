@@ -1,0 +1,75 @@
+@import "./assets/px2rem.scss";
+
+.am-toast-notice-content .am-toast-text {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.creditInformation {
+  position: relative;
+  .am-list {
+    .am-list-item {
+      height: 52px;
+      font-size: 14px;
+
+      .am-list-content {
+        color: #3f4850;
+      }
+      .am-list-extra {
+        color: #444d54;
+      }
+      .am-list-line {
+        font-size: 14px;
+
+        .am-input-label {
+          color: #3f4850;
+        }
+        .am-input-control {
+          input {
+            text-align: right;
+            color: #444d54;
+          }
+        }
+      }
+    }
+  }
+
+  .next {
+    display: block;
+    background: #e1514c;
+    height: px2rem(44);
+    border: none;
+    border-radius: 16px 0 16px 0;
+    padding: px2rem(13.5) 0;
+    margin: px2rem(120) px2rem(28);
+    color: #fff;
+    font-size: 17px;
+    line-height: 17px;
+    text-align: center;
+  }
+  .next::before {
+    border: none !important;
+  }
+
+  .am-button-disabled {
+    background: #bdbdbd;
+  }
+
+  .error {
+    color: #e1514c;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    margin-top: px2rem(5);
+  }
+}
+.am-list-item .am-list-line .am-list-content,
+.am-list-item .am-input-label,
+.am-list-item .am-list-line .am-list-extra,
+.am-list-item .am-input-control input {
+  font-size: 14px;
+}
+
+.am-navbar-light .am-navbar-title {
+  color: #444d54;
+  font-size: 17px;
+}

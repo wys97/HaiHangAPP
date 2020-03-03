@@ -1,0 +1,49 @@
+@import "./assets/px2rem.scss";
+
+body{
+    background: white;
+}
+
+.coupon{
+    width: 100%;
+   padding-top: px2rem(50);
+}
+
+.content{
+    text-align: center;
+    padding: px2rem(56) px2rem(38) 0;
+    font-size: px2rem(14);
+    color: #909090;
+    img{
+        width: px2rem(100);
+        height: px2rem(60);
+    }
+    .hint{
+        font-size: px2rem(16);
+        margin: px2rem(32);
+        text-align: center;
+        color: #444D54;
+        p{
+            margin: 4px 0;
+        }
+    }
+    .placeholder{
+        margin-top: px2rem(83);
+        height: 1px;
+        width: px2rem(300);
+        background: #E9E9E9 ;
+    }
+    .feature{
+        text-align: left;
+     
+        .title{
+            margin: px2rem(16) 0;
+        }
+        p{
+            line-height: 20px;
+        }
+        .content2{
+            margin-top: 10px;
+        }
+    }
+}

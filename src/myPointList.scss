@@ -1,0 +1,89 @@
+@import "./assets/px2rem.scss";
+.am-toast-notice-content .am-toast-text {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.myPointList {
+  .am-list {
+    .am-list-body {
+      .am-list-item {
+        height: 55px;
+
+        .am-list-line {
+          .am-list-content {
+            font-size: 14px;
+            color: #454f55;
+            line-height: 20px;
+
+            .am-list-brief {
+              font-size: 12px;
+              color: #9b9b9b;
+              line-height: 17px;
+              margin-top: 0;
+            }
+          }
+          .am-list-extra {
+            font-size: 14px;
+            color: #444d54;
+            line-height: 20px;
+          }
+        }
+      }
+
+      .am-list-item::after {
+        width: px2rem(344);
+        margin-left: px2rem(15);
+      }
+    }
+    .am-list-body::before {
+      height: 0;
+    }
+  }
+}
+.am-modal-wrap {
+  .am-modal-content {
+    .am-modal-close {
+      margin-top: px2rem(10);
+      .am-modal-close-x {
+        margin: px2rem(6);
+      }
+    }
+    .am-modal-header {
+      padding: px2rem(6) px2rem(15) px2rem(25);
+      .am-modal-title {
+        margin-top: px2rem(10);
+        font-size: px2rem(17);
+        color: #444d54;
+        letter-spacing: -0.41px;
+        text-align: center;
+        font-weight: 900;
+      }
+    }
+    .am-modal-body {
+      margin: 0 px2rem(15);
+      color: #444d54;
+
+      h3 {
+        font-size: px2rem(14);
+        letter-spacing: 0;
+        line-height: px2rem(20);
+        text-align: left;
+        font-weight: bolder;
+        margin-bottom: px2rem(5);
+      }
+
+      p {
+        font-size: px2rem(12);
+        letter-spacing: 0;
+        line-height: px2rem(17);
+        text-align: left;
+      }
+
+      span {
+        text-align: left;
+        font-size: px2rem(12);
+        margin-bottom: px2rem(48);
+        display: block;
+      }
+    }
+  }
+}

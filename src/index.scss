@@ -1,0 +1,292 @@
+@import "./assets/px2rem.scss";
+.home {
+  height: 100%;
+  .am-pull-to-refresh-down,
+  .am-pull-to-refresh-indicator {
+    font-size: 14px;
+    color: #444d54;
+  }
+  .am-pull-to-refresh-indicator {
+    .am-icon-md {
+      width: px2rem(35);
+      height: 35px;
+      background-image: url(./assets/image/loading.gif);
+      margin: px2rem(-20) 0 px2rem(10) 0;
+
+      use {
+        display: none !important;
+      }
+    }
+  }
+}
+body {
+  background: #fff;
+}
+.tab {
+  height: 100%;
+  background: #fff;
+  .am-tabs-tab-bar-wrap {
+    // box-shadow: 0 -4px 12px 0 rgba(63, 22, 3, 0.1);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 10000;
+
+    .tabicon {
+      height: 23px;
+    }
+  }
+
+  .repayment {
+    height: 100%;
+    img {
+      display: block;
+      width: px2rem(80);
+      margin: px2rem(80) 0 px2rem(24) px2rem(147);
+    }
+    p {
+      font-size: 17px;
+      color: #909090;
+      letter-spacing: -0.34px;
+      text-align: center;
+      line-height: 20px;
+    }
+
+    .next {
+      display: block;
+      background: #e1514c;
+      width: px2rem(319);
+      height: px2rem(44);
+      border: none;
+      border-radius: 16px 0 16px 0;
+      color: #fff;
+      font-size: 17px;
+      line-height: 44px;
+      text-align: center;
+      margin: px2rem(50) px2rem(28);
+    }
+    .next::before {
+      border: none !important;
+    }
+  }
+}
+
+//隐私协议
+.privacyPolicy {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10010;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444d54;
+  .privacyPolicy_wrap {
+    width: 79.6%;
+    text-align: center;
+    background: #fff;
+    padding-top: px2rem(26);
+    font-size: px2rem(14);
+    border-radius: 6px;
+    letter-spacing: 4px;
+  }
+  .privacyPolicy_title {
+    font-family: 'PingFangSC-Medium';
+    font-size: px2rem(10);
+    font-weight: bolder;
+    color: #444d54;
+    letter-spacing: 1.5px;
+  }
+  .privacyPolicy_content {
+    text-align: left;
+    font-family: 'PingFangSC-Regular';
+    padding: px2rem(15) px2rem(23);
+    line-height: px2rem(20);
+  }
+  .privacyPolicy_details {
+    color: #e1514c;
+  }
+  .btn_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    border-top: 1px solid #f4f4f4;
+  }
+  .privacyPolicy_no_btn {
+    color: #444d54;
+    width: 100%;
+    height: 100%;
+    line-height: 50px;
+    border-right: 1px solid #f4f4f4;
+    text-align: center;
+    font-size: 16px;
+
+  }
+  .privacyPolicy_btn {
+    color: #e1514c;
+    width: 100%;
+    height: 100%;
+    line-height: 50px;
+    text-align: center;
+    font-size: 16px;
+  }
+}
+
+.am-modal-mask {
+  z-index: 10020;
+}
+.am-modal-wrap {
+  z-index: 10021;
+}
+.am-modal-popup-slide-up {
+  height: 75%;
+}
+.am-modal-close {
+  top: 2px;
+  padding: 3px 3px;
+  line-height: 21px;
+  height: 32px;
+  box-sizing: border-box;
+}
+.am-modal-header {
+  padding: 10px 15px 15px;
+}
+.declare_centent {
+  text-align: left;
+  font-size: 14px;
+  color: #3f4850;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 0 ;
+  span {
+    font-weight: 900;
+  }
+}
+
+
+
+//买机票
+.ticketModel{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+
+  .ticket_content{
+    width: 75%;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px 0 0;
+    text-align: center;
+    position: relative;
+  }
+  .title{
+    font-size: 18px;
+    text-align: center;
+    font-weight: 600;
+    margin-top:10px;
+    color: #000000;
+
+  }
+  .content{
+    margin-top: 16px;
+    text-align: left;
+    line-height: 22px;
+    padding: 0 16px;
+    color: #8D8D8D;
+  }
+
+  .btn_wrap{
+    margin: 20px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #E9E9E9;
+  }
+
+  .btn{
+    color: #000000;
+    width: 100%;
+    height: 50px;
+    border: none;
+    text-align: center;
+    line-height:50px;
+    background: #fff;
+    border-bottom-left-radius:10px;
+    font-size: 18px;
+  }
+  .btn2{
+    font-size: 18px;
+    width: 100%;
+    height: 50px;
+    border: none;
+    text-align: center;
+    line-height: 50px;
+    background: #fff;
+    border-left: 1px solid #E9E9E9;
+    color: rgb(243, 55, 55);
+    border-bottom-right-radius: 10px;
+  }
+
+}
+
+
+
+
+
+.am-modal-wrap {
+  .am-modal-header {
+    .am-modal-title {
+      margin-top: px2rem(10);
+      font-size: 17px;
+      color: #444d54;
+      letter-spacing: -0.41px;
+      text-align: center;
+      font-weight: 900;
+      height: 22px;
+      line-height: 22px;
+    }
+  }
+  
+  .am-modal-popup {
+    height: 80%;
+  }
+  .am-modal-body {
+    margin: 0 px2rem(15);
+    color: #444d54;
+    overflow: auto;
+    .h4 {
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 20px;
+      text-align: left;
+      font-weight: bolder;
+    }
+
+    span {
+      text-align: left;
+      font-size: 14px;
+      font-weight: bolder;
+    }
+  }
+}
+.p {
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 17px;
+  text-align: left;
+  padding-bottom: 90px;
+}

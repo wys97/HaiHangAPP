@@ -1,0 +1,130 @@
+@import "./assets/px2rem.scss";
+.am-toast-notice-content .am-toast-text{
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.addBankCard {
+  .pick-list {
+    .am-list-item {
+      // height: 52px;
+
+      .am-list-content {
+        color: #3f4850;
+      }
+      .am-list-extra {
+        color: #444d54;
+      }
+      .am-list-line {
+        // height: 52px;
+        .am-input-label {
+          color: #3f4850;
+        }
+      }
+
+      .am-input-control {
+        color: #bdbdbd;
+        letter-spacing: -0.34px;
+        input {
+          text-align: right;
+          color: #444d54;
+        }
+      }
+    }
+  }
+  .am-list-body {
+    .bankCard {
+      .am-list-line {
+        position: relative;
+        height: 52px;
+        .am-input-label {
+          .ocr {
+            position: absolute;
+            right: 40px;
+            top: 14px;
+            width: px2rem(18);
+            height: px2rem(16);
+          }
+          .supportBank {
+            position: absolute;
+            top: 14px;
+            right: 10px;
+            width: 0.68267rem;
+            height: 0.71133rem;
+          }
+        }
+        .am-input-clear{
+          width: 16px;
+          height: 16px;
+          margin-right: 56px;
+          background-size: 23px 21px;
+          background-position: -1px 0px;
+          margin-top: -8px;
+        }
+      }
+
+      .am-input-control {
+        margin-right: 10px;
+        color: #bdbdbd;
+
+        letter-spacing: -0.34px;
+        input {
+          // text-align: right;
+          color: #444d54;
+          margin-bottom: 2px;
+        }
+      }
+    }
+  }
+
+  .next {
+    display: block;
+    background: #e1514c;
+    height: px2rem(44);
+    border: none;
+    border-radius: 16px 0 16px 0;
+    padding: px2rem(13.5) 0;
+    color: #fff;
+    font-size: 17px;
+    line-height: 17px;
+    text-align: center;
+    margin: px2rem(130) px2rem(28);
+  }
+  .next::before {
+    border: none !important;
+  }
+
+  .am-button-disabled {
+    background: #BDBDBD;
+  }
+
+  .caution {
+    color: #e0514c;
+    margin-top: 9px;
+    margin-left: 16px;
+    font-size: 12px;
+    line-height: 17px;
+  }
+}
+.am-navbar-light .am-navbar-title {
+  color: #444d54;
+  font-size: 17px;
+}
+
+.am-list-item .am-list-line .am-list-content,.am-list-item .am-input-label{
+  font-size: 14px;
+  color: #454F55;
+}
+
+
+.addBankCard .am-list-body .bankCard .am-list-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.am-list-item .am-input-control input{
+  font-size: 14px;
+}
+
+.am-list-item.am-list-item-middle .am-list-line{
+  height: 52px;
+}

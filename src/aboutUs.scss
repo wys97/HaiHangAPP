@@ -1,0 +1,208 @@
+@import "./assets/px2rem.scss";
+.aboutUs {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  .content {
+    width: 100%;
+    padding: 0 15px;
+    font-size: 14px;
+    color: #3f4850;
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+      border-bottom: 1px solid #f2f2f2;
+    }
+    img {
+      width: 9px;
+      height: 12px;
+    }
+  }
+}
+
+.serviceModule {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  background: #fff;
+}
+
+.relationModule {
+  position: fixed;
+  top: 45px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  background: #fff;
+
+  .relationModule_content {
+    margin-left: px2rem(26);
+
+    .relationModule_title {
+      font-size: px2rem(16);
+      color: #9b9b9b;
+      line-height: px2rem(22);
+      margin-top: px2rem(23);
+
+      p {
+        i {
+          color: #e1514c;
+        }
+
+        .url {
+          text-decoration: underline;
+        }
+      }
+    }
+    .message {
+      margin-top: px2rem(32);
+      h4 {
+        font-size: px2rem(16);
+        color: #444d54;
+        letter-spacing: -0.39px;
+        margin-left: px2rem(3);
+        margin-bottom: px2rem(19);
+        line-height: px2rem(22);
+      }
+      .title {
+        .header {
+          span {
+            display: inline-block;
+            width: px2rem(22);
+            height: px2rem(16);
+            border-radius: 50%;
+            background: #e1514c;
+            font-family: "ArialMT";
+            font-size: px2rem(16);
+            line-height: px2rem(16);
+            color: #ffffff;
+            text-align: center;
+            padding: px2rem(3) 0;
+          }
+          i {
+            display: inline-block;
+            margin-left: px2rem(18);
+            font-size: px2rem(14);
+            color: #444d54;
+            line-height: px2rem(20);
+          }
+        }
+        .header3 {
+          display: inline-block;
+          width: px2rem(22);
+          height: px2rem(16);
+          border-radius: 50%;
+          background: #e1514c;
+          font-family: "ArialMT";
+          font-size: px2rem(16);
+          line-height: px2rem(16);
+          color: #ffffff;
+          text-align: center;
+          padding: px2rem(3) 0;
+          vertical-align: top;
+        }
+        .header3_title {
+          width: px2rem(266);
+          display: inline-block;
+          margin-left: px2rem(18);
+          font-size: px2rem(14);
+          color: #444d54;
+          line-height: px2rem(20);
+
+          b {
+            color: #e1514c;
+          }
+        }
+      }
+      .introducer {
+        margin: px2rem(19) 0 px2rem(19) px2rem(10.5);
+        border-left: 1px solid #bdbdbd;
+        font-family: "PingFangSC-Regular";
+        font-size: px2rem(14);
+        color: #9b9b9b;
+        line-height: px2rem(27);
+        padding-left: px2rem(29);
+
+        p {
+          span {
+            display: inline-block;
+          }
+          i {
+            display: inline-block;
+            width: px2rem(168);
+            margin-left: px2rem(19);
+            color: #e1514c;
+            vertical-align: middle;
+          }
+          button {
+            display: inline-block;
+            background: #fff;
+            font-size: px2rem(10);
+            color: #444d54;
+            line-height: px2rem(10);
+            padding: px2rem(2) px2rem(3);
+            text-align: center;
+            border: 1px solid #727272;
+            border-radius: 1px;
+            margin-left: px2rem(10);
+            vertical-align: middle;
+          }
+        }
+        div {
+          width: px2rem(280);
+          margin-top: px2rem(10);
+          border-top: 1px solid #e9e9e9;
+          padding: px2rem(8.5) 0 px2rem(37) 0;
+
+          p {
+            line-height: px2rem(20);
+          }
+        }
+        .email{
+          padding-bottom: px2rem(37);
+        }
+      }
+    }
+  }
+}
+
+.am-toast-notice-content .am-toast-text {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.serviceModule_content {
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 17px;
+  text-align: left;
+  padding-bottom: 90px;
+  overflow: auto;
+  height: 100%;
+  padding: 50px 15px 100px;
+  span {
+    text-align: left;
+    font-size: 14px;
+    font-weight: bolder;
+  }
+  li {
+    padding-left: 20px;
+  }
+
+  .h4 {
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 20px;
+    text-align: left;
+    font-weight: bolder;
+  }
+}
+
+.am-navbar-light .am-navbar-title {
+  color: #444d54;
+}

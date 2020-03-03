@@ -1,0 +1,162 @@
+@import "./assets/px2rem.scss";
+.am-toast-notice-content .am-toast-text{
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.addBankCardAuth {
+  background: #fff;
+  height: 100%;
+  .am-list {
+    .am-list-item {
+      height: 52px;
+
+      .am-list-content {
+        color: #3f4850;
+      }
+      .am-list-extra {
+        color: #444d54;
+      }
+      .am-list-line {
+        margin-right: 15px;
+        padding: 0;
+        .am-input-label {
+          color: #3f4850;
+        }
+      }
+      .am-input-control {
+        color: #bdbdbd;
+        letter-spacing: -0.34px;
+        input {
+          text-align: right;
+          color: #444d54;
+        }
+      }
+    }
+  }
+  .am-list-body {
+    border-bottom: none;
+    .bankCard {
+      .am-list-line {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+
+        .am-input-label {
+          .coundDown {
+            width: px2rem(80);
+            height: 30px;
+            position: absolute;
+            right: 0;
+            top: 10px;
+            border: 1px solid #e0514c;
+            background: #fff !important;
+            border-radius: 4px;
+            color: #e0514c;
+            text-align: center;
+
+            span {
+              display: block;
+              font-size: 14px;
+              line-height: 14px;
+              padding: px2rem(8) 0;
+              height: 14px;
+            }
+          }
+        }
+      }
+
+      .am-input-control {
+        margin-right: 105px;
+        color: #bdbdbd;
+        letter-spacing: -0.34px;
+        input {
+          text-align: right;
+          color: #444d54;
+        }
+      }
+    }
+    .cardType {
+      .am-list-extra {
+        flex-basis: 70%;
+      }
+    }
+  }
+
+  .readTheAgreement {
+    position: absolute;
+    bottom: 84px;
+    width: 100%;
+    font-size: 12px;
+    line-height: 17px;
+    color: #454f55;
+    text-align: center;
+    .my-radio {
+      width: 100%;
+      text-align: center;
+      display: block;
+
+      .am-radio {
+        padding: 1px;
+        border: 1px solid #e0514c;
+        border-radius: 1.41px;
+        margin-right: 5px;
+        width: 10px;
+        height: 10px;
+
+        .am-radio-inner:after {
+          border-color: #e0514c;
+          top: -6.5px;
+          right: 2px;
+        }
+
+        b {
+          color: #e0514c;
+        }
+      }
+    }
+  }
+
+  .next {
+    display: block;
+    background: #e1514c;
+    height: px2rem(44);
+    border: none;
+    border-radius: 16px 0 16px 0;
+    padding: px2rem(13.5) 0;
+    color: #fff;
+    font-size: 17px;
+    line-height: 17px;
+    text-align: center;
+    margin: px2rem(60) px2rem(28);
+  }
+  .next::before {
+    border: none !important;
+  }
+
+  .am-button-disabled {
+    background: #BDBDBD;
+  }
+
+  .caution {
+    color: #e0514c;
+    margin-top: 9px;
+    margin-left: 16px;
+    font-size: 12px;
+    line-height: 17px;
+  }
+
+  .error {
+    color: #e1514c;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    margin-top: px2rem(5);
+  }
+}
+.am-list-item .am-list-line .am-list-content,.am-list-item .am-input-control input{
+  font-size: 14px;
+}
+.am-list-item .am-list-line .am-list-extra,.am-list-item .am-input-label{
+  font-size: 14px;
+}
+.am-navbar-light .am-navbar-title{
+  color: #444d54;
+}

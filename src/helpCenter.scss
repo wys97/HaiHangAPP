@@ -1,0 +1,37 @@
+@import "./assets/px2rem.scss";
+
+.am-toast-notice-content .am-toast-text{
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+
+.helpCenter{
+    width: 100%;
+    padding-top: px2rem(50);
+    height: 100%;
+    background: #fff;
+    color: #444D54;;
+    .modal{
+        width: 100%;
+        padding: 0 15px;
+ 
+    }
+    .modal_content{
+        display:flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        border-bottom: 1px solid #EDEDED;
+        height: px2rem(50);
+    }
+  .time{
+      color: #444D54;;
+  }
+
+  .Content{
+      font-size: 14px;
+      padding: 0 15px;
+      line-height: 20px;
+  }
+}
+

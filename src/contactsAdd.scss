@@ -1,0 +1,133 @@
+@import "./assets/px2rem.scss";
+.am-toast-notice-content .am-toast-text{
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.contactsAdd {
+  position: relative;
+  background: #fff ;
+
+  .am-navbar-right {
+    img {
+      height: 22px;
+    }
+  }
+
+  .am-list {
+    .am-list-header {
+      background: #F9FAF9;
+    }
+    .am-list-item {
+      height: 52px;
+      font-size: 14px;
+
+      .am-list-content {
+        color: #3f4850;
+      }
+      .am-list-extra {
+        color: #444d54;
+      }
+      .am-list-line {
+        font-size: 14px;
+
+        .am-input-label {
+          color: #3f4850;
+        }
+        .am-input-control {
+          input {
+            text-align: right;
+            color: #444d54;
+          }
+        }
+      }
+    }
+  }
+  .next {
+    display: block;
+    background: #e1514c;
+    height: px2rem(44);
+    border: none;
+    border-radius: 16px 0 16px 0;
+    margin: px2rem(120) px2rem(28);
+    padding: px2rem(13.5) 0;
+    color: #fff;
+    font-size: 17px;
+    line-height: 17px;
+    text-align: center;
+  }
+  .next::before {
+    border: none !important;
+  }
+
+  .am-button-disabled {
+    background: #BDBDBD;
+  }
+}
+
+.am-picker-popup-body {
+  .am-picker-popup-item {
+    color: #333333;
+  }
+}
+
+.relation {
+  b {
+    border: 1px solid #E1514C;
+    border-radius: 2px;
+    font-size: 10px;
+    color: #E1514C;
+    margin-right: px2rem(15);
+    display: inline-block;
+    height: 15px;
+    line-height: 15px;
+    width: px2rem(30);
+    text-align: center;
+    vertical-align: middle;
+  }
+  i {
+    margin-left:px2rem(45);
+  }
+}
+.error {
+    color: #e1514c;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    margin-top: px2rem(5);
+  }
+  .am-list-item .am-input-label, .am-list-item .am-list-line .am-list-content {
+    font-size: 14px;
+  }
+  .am-list-item .am-list-line .am-list-extra,.am-list-item .am-input-control input{
+    font-size: 14px;
+
+  }
+  .am-navbar-light .am-navbar-title{
+    color: #444d54;
+  }
+
+
+  .am-list-item .am-list-line .am-list-extra {
+    -webkit-flex-basis: 36%;
+    -ms-flex-preferred-size: 36%;
+    flex-basis: 36%;
+    color:  #BDBDBD !important;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: right;
+    width: 100%;
+    overflow: initial; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-top: 5px;
+    padding-bottom: 7px;
+}
+.contactsAdd .am-list .am-list-item .am-list-line .am-input-control input {
+  height: 50px;
+}
+
+.hint{
+  color: #E0514C;
+  font-size: 12px;
+  padding: 10px 15px;
+  line-height: 17px;
+}

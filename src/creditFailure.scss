@@ -1,0 +1,76 @@
+@import "./assets/px2rem.scss";
+.creditFailure {
+  position: relative;
+
+  .succeed {
+    img {
+      display: block;
+      width: px2rem(120);
+      // height: px2rem(62);
+      margin: px2rem(80) px2rem(129) px2rem(24) px2rem(129);
+    }
+
+    h2 {
+      font-size: 16px;
+      color: #606060;
+      letter-spacing: -0.39px;
+      text-align: center;
+      line-height: 22px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #909090;
+      letter-spacing: -0.34px;
+      text-align: center;
+      line-height: 20px;
+    }
+
+    span {
+      font-size: 14px;
+      color: #e1514c;
+      letter-spacing: -0.34px;
+      text-align: center;
+      line-height: 20px;
+      display: block;
+    }
+  }
+  .buttom {
+    position: fixed;
+    display: block;
+    bottom: 0;
+    padding-bottom: 15px;
+    width: 100%;
+    .next {
+      display: block;
+      background: #e1514c;
+      height: px2rem(44);
+      border: none;
+      border-radius: 16px 0 16px 0;
+      padding: px2rem(13.5) 0;
+      color: #fff;
+      font-size: 17px;
+      line-height: 17px;
+      text-align: center;
+      margin: 0 28px;
+    }
+    .next::before {
+      border: none !important;
+    }
+    .title {
+    display: block;
+    font-size: 12px;
+    color: #909090;
+    letter-spacing: -0.29px;
+    text-align: center;
+    line-height: 17px;
+    margin-bottom: 10px;
+  }
+  }
+
+  .am-button-disabled {
+    background: #bdbdbd;
+  }
+  
+}

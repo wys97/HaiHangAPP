@@ -1,0 +1,460 @@
+@import "./assets/px2rem.scss";
+html{
+  background: #fff;
+}
+
+body{
+  background: #fff;
+}
+
+.login {
+  // position: fixed;
+  // top: 0;
+  // left: 0;
+  // right: 0;
+  // bottom: 0;      
+  // height: 100%;
+  background: #fff;
+}
+
+.am-toast-notice-content .am-toast-text {
+  background: rgba(0, 0, 0, 0.8);
+}
+.tab {
+  height: 100%;
+  background: #fff;
+  .am-tabs-tab-bar-wrap {
+    box-shadow: 0 -4px 12px 0 rgba(63, 22, 3, 0.1);
+    z-index: 10000;
+  }
+}
+
+.header {
+  width: 100%;
+  height: px2rem(44);
+  position: relative;
+  font-size: 17px;
+  line-height: 44px;
+  color: #444d54;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: bolder;
+  background: rgba(255, 255, 255, 0.82);
+
+  h1 {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+  }
+
+  img {
+    display: inline-block;
+    height: 24px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+}
+
+.error {
+  color: #e1514c;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  margin-top: px2rem(5);
+}
+
+.logo {
+  width: px2rem(60);
+  height: px2rem(60);
+  margin: 1.7000rem 0  38px ;
+}
+
+
+.login_content_wrap{
+  width: 100%;
+  height: 100%;
+  padding-top:45px ;
+  overflow-y: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-flow: column;
+  margin-bottom: 30px;
+}
+
+
+
+.login_content{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 10px 0;
+  font-size: 18px;
+  width: 100%;
+  height:38px;
+  padding: 0 18px;
+}
+
+.formInput{
+  position: relative;
+  letter-spacing: -1px;
+}
+
+.login_title{
+  color: #e1514c;
+  height:48px;
+  line-height: 48px;
+  border-bottom: 2px solid #e1514c;
+}
+.login_title2{
+  color: #494949;
+  height: 38px;
+  line-height:38px;
+}
+//验证码登录
+.codeModule{
+  width: px2rem(319);
+  margin-top: 20px;
+  height: px2rem(380);
+  position: relative;
+  
+  .next {
+    display: block;
+    background: #e1514c;
+    width: px2rem(319);
+    height: px2rem(44);
+    border: none;
+    border-radius: 22px 0 22px 0;
+    margin: px2rem(66) px2rem(28) px2rem(20) px2rem(0);
+    color: #fff;
+    font-size: 17px;
+    line-height: 44px;
+    text-align: center;
+  }
+  .next::before {
+    border: none !important;
+  }
+  .am-button-disabled {
+    background: #bdbdbd !important;
+  }
+  .validationTips {
+    font-size: 16px;
+    color: #444d54;
+    letter-spacing: 0;
+    // margin-left: px2rem(20);
+    margin: 0px 10px;
+  }
+  .formInput{
+    position: relative;
+    .coundDown {
+      position: absolute;
+      width: 78px;
+      font-size: 14px;
+      height: 24px;
+      top: 26px;
+      right: 10px;
+      line-height: 24px;
+      color: #E1514C;
+      background: #fff !important;
+      border: 1px solid #e1514c;
+      border-radius: 25px;
+    }
+   
+    .am-list-item.am-input-item {
+      padding-left: 0 ;
+      padding: 0 10px;
+
+    }
+    .am-list-item .am-list-line{
+      padding-right: 0 !important;
+    }
+  
+  }
+
+}
+
+
+//密码登录
+.passWordModule{
+  width: px2rem(319);
+  margin-top: 20px;
+  height: px2rem(380);
+  position: relative;
+  .next {
+    display: block;
+    background: #e1514c;
+    width: px2rem(319);
+    height: px2rem(44);
+    border: none;
+    border-radius: 22px 0 22px 0;
+    margin: px2rem(66) px2rem(28) px2rem(20) px2rem(0);
+    padding: px2rem(13.5) 0;
+    color: #fff;
+    font-size: 17px;
+    line-height: 17px;
+    text-align: center;
+  }
+  .next::before {
+    border: none !important;
+  }
+  .am-button-disabled {
+    background: #bdbdbd !important;
+  }
+  .validationTips {
+    font-size: 16px;
+    color: #444d54;
+    letter-spacing: 0;
+    margin-left: px2rem(36);
+  }
+ 
+    .am-list-item.am-input-item {
+      padding-left: 0 ;
+      padding: 0 10px;
+    }
+    .am-list-item .am-list-line{
+      padding-right: 0 ;
+    }
+    .am-list-item.am-input-item{
+      height: 56px;
+      .am-input-clear{
+        width: 16px;
+        height: 16px;
+        background-size: 23px 21px;
+        background-position: -1px 0px;
+      }
+    }
+}
+
+
+.password {
+  position: relative;
+  .am-list-item .am-list-line{
+    padding-right: 25px ;
+  }
+  .visible {
+    position: absolute;
+    top: 16px;
+    right: 10px;
+
+    .eye {
+      width: px2rem(19);
+      display: inline-block;
+    }
+    .eye2{
+      width: px2rem(19);
+      display: inline-block;
+    }
+  }
+  .am-list-item.am-input-item{
+    height: 56px;
+    .am-input-clear{
+      width: 16px;
+      height: 16px;
+      background-size: 23px 21px;
+      background-position: -1px 0px;
+      margin-right: 8px;
+    }
+    .password .visible{
+      top:16px;
+    }
+  }
+}
+
+.readTheAgreement {
+  width: 100%;
+  font-size: 12px;
+  line-height: 17px;
+  color: #454f55;
+  text-align: center;
+  // margin-top: px2rem(90);
+  position: absolute;
+  top: 300px;
+  
+
+  img {
+    height: 15px;
+    margin-right: 7px;
+    vertical-align: top;
+    display: inline-block;
+    margin-top: 3px;
+  }
+  span {
+    vertical-align: top;
+    font-size: 12px;
+    letter-spacing: 0;
+    text-align: center;
+    line-height: 25px;
+    display: inline-block;
+    position: relative;
+    // top: 15px;
+  }
+  .protocol {
+    color: #e0514c;
+    vertical-align: top;
+    // font-size: 12px;
+    letter-spacing: 0;
+    text-align: center;
+    line-height: 25px;
+    display: inline-block;
+    position: relative;
+    // bottom: 13px;
+  }
+}
+
+.am-modal-wrap {
+  .am-modal-header {
+    .am-modal-title {
+      margin-top: px2rem(10);
+      font-size: 17px;
+      color: #444d54;
+      letter-spacing: -0.41px;
+      text-align: center;
+      font-weight: 900;
+    }
+  }
+  .am-modal-title {
+    height: 22px;
+    line-height: 22px;
+  }
+  .am-modal-popup {
+    height: 80%;
+  }
+  .am-modal-body {
+    margin: 0 px2rem(15);
+    color: #444d54;
+    overflow: auto;
+
+    .h4 {
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 20px;
+      text-align: left;
+      font-weight: bolder;
+    }
+
+    span {
+      text-align: left;
+      font-size: 14px;
+      font-weight: bolder;
+    }
+  }
+}
+.p {
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 17px;
+  text-align: left;
+  padding-bottom: 90px;
+}
+
+// 图片验证码弹框
+.picture_wrap {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #494949;
+  .content {
+    text-align: right;
+    width: 75%;
+    font-size: px2rem(14);
+    border-radius: 6px;
+    height: px2rem(195);
+    background: #fff;
+    padding: px2rem(12);
+  }
+  .close {
+    width: px2rem(16);
+    height: px2rem(12);
+    padding: 0 0 5px 5px;
+  }
+
+  .title {
+    margin-top: px2rem(18);
+    text-align: left;
+    line-height: px2rem(22);
+    padding: 0 px2rem(15);
+  }
+  .from {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: px2rem(25);
+    input {
+      width: 45%;
+      height: px2rem(30);
+      border: none;
+      
+      padding-left: px2rem(10);
+    }
+    .am-input-control{
+      border-bottom: 1px solid #d6d6d6;
+    }
+    img {
+      width: px2rem(100);
+      height: px2rem(30);
+      border: none;
+    }
+    .refresh {
+      width: px2rem(14);
+      height: px2rem(14);
+      // margin-top: px2rem(16);
+      margin-left: px2rem(4);
+    }
+  }
+  .am-list-item.am-input-item {
+    width: px2rem(138);
+  }
+
+  .am-list-line::after {
+    content: none !important;
+    position: relative;
+    background-color: #ddd;
+    display: block;
+    z-index: 0;
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+  }
+  
+}
+
+.am-list-item .am-input-control input {
+  font-size: 16px !important;
+  padding: 6px 0 6px 0px;
+  color: #444D54;
+}
+
+
+.am-tab-bar .am-tabs .am-tabs-tab-bar-wrap .am-tab-bar-tab-title{
+     margin-left: 0px; 
+     width: 100%;
+    font-size: 18px;
+     letter-spacing: 0px;
+    text-align: center;
+}
+
+
+.am-tab-bar-tab{
+  padding-left: 16px;
+}
+
+
+.am-modal-close {
+  top:px2rem(10);
+
+  .am-modal-close-x {
+    margin: px2rem(3);
+  }
+}

@@ -1,0 +1,50 @@
+@import "./assets/px2rem.scss";
+.securitySet{
+    width: 100%;
+    padding-top: px2rem(45);
+   height: 100%;
+   background: #fff;
+   color: #3F4850;
+   font-size: px2rem(14);
+}
+.content{
+  width: 100%;
+  padding: 0 15px;
+
+}
+.wrap{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  border-bottom: 1px solid #eeeeee;
+}
+.id{
+  color: #9B9B9B;
+}
+.set_di{
+  display: flex;
+  align-items: center;
+  height: 50px;
+  img{
+    width: 8px;
+    height: 14px;
+    margin-left: 8px;
+  }
+}
+
+.set_ti{
+  display: flex;
+  align-items: center;
+  height: 50px;
+color: #E1514C;
+  img{
+    width: 8px;
+    height: 14px;
+    margin-left: 8px;
+  }
+}
+
+.am-navbar-light .am-navbar-title{
+  color:'#444D54'
+}
