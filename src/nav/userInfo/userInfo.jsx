@@ -288,7 +288,7 @@ export default class UserInfo extends React.Component {
               <Item arrow="horizontal" multipleLine onClick={() => {}}>
                 <div className="size">
                   <img src={require("../../assets/image/critd.png")} alt="" />
-                  <span>授信评估</span>
+                  <span>我的合同</span>
                 </div>
               </Item>
               <Item

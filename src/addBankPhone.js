@@ -41,7 +41,9 @@ export default class AddBankPhoneForm extends React.Component {
       showProtocol: false, //查看协议
       error: "请和银行预留手机号保持一致",
       toDisabled: true,
-      protocolData:'',
+      protocolData: '',
+      title: '委托扣款授权书',
+      showTitle: false,
     };
   }
 
@@ -52,37 +54,37 @@ export default class AddBankPhoneForm extends React.Component {
         ajax: window.api.ajax,
         // detail: window.api.pageParam,
         cardNo: window.api.pageParam.cardNo,
-        // bankName: [window.api.pageParam.bankName]
+        bankName: [window.api.pageParam.bankName]
       });
+
       that.getDate();
       that.getBankData(window.api.pageParam.cardNo);
       that.gitProtocolData(window.api.pageParam.cardNo);
     };
   }
 
-  gitProtocolData=(cardNo)=>{
+  gitProtocolData = (cardNo) => {
     let that = this;
     window.api.ajax({
-      url: getLink()+getApi('withholdAgreementParam')+'?bankCard='+cardNo,
+      url: getLink() + getApi('withholdAgreementParam') + '?bankCard=' + cardNo,
       method: 'post',
       headers: {
         Apptoken: window.localStorage.Apptoken
       },
-  }, function(ret, err) {
+    }, function (ret, err) {
+      if (ret.code == '200') {
 
-      if (ret.code=='200') {
-    
         that.setState({
-          protocolData:ret.data
+          protocolData: ret.data
         })
 
       } else {
       }
-  });
+    });
   }
 
   getBankData = (cardNo) => {
-   let that = this;
+    let that = this;
     if (window.api) {
       window.api.ajax(
         {
@@ -95,9 +97,10 @@ export default class AddBankPhoneForm extends React.Component {
           },
         },
         function (ret, err) {
+
           if (ret.code == '200') {
             that.setState({
-              detail:ret.data
+              detail: ret.data
             });
           } else {
             Toast.info(err.body.message, 3)
@@ -178,9 +181,7 @@ export default class AddBankPhoneForm extends React.Component {
     that.setState({
       bankName: value
     });
-   setTimeout(()=>{
-    console.log(JSON.stringify(that.state.bankName))
-   },200)
+
   };
 
   phoneVerification = () => {
@@ -219,10 +220,10 @@ export default class AddBankPhoneForm extends React.Component {
 
   cLickRadio = (value) => {
     if (value) {
-      setTimeout(()=>{
+      setTimeout(() => {
         let protocol = document.getElementsByClassName('protocol')[0];
-        protocol.removeEventListener('scroll',()=>{})
-      },200)
+        protocol.removeEventListener('scroll', () => { })
+      }, 200)
       this.setState({
         click: true
       }, () => { this.authCode() });
@@ -248,26 +249,66 @@ export default class AddBankPhoneForm extends React.Component {
       toDisabled: true,
     })
 
-    setTimeout(()=>{
+    setTimeout(() => {
       let protocol = document.getElementsByClassName('protocol')[0]
       if (protocol) {
         protocol.addEventListener('scroll', e => {
           let offsetHeight = e.target.offsetHeight; //滚动条高度
           let scrollTop = e.target.scrollTop; //滚动条到顶部的距离
           let scrollHeight = e.target.scrollHeight; //元素的总高度
-          if(offsetHeight+scrollTop>=scrollHeight){
+          if (scrollTop >= 23 && scrollTop < 846) {
+            this.setState({
+              showTitle: true,
+              title: '委托扣款授权书'
+            })
+          } else if (scrollTop >= 846 && scrollTop < 2590) {
+            this.setState({
+              showTitle: true,
+              title: '宝付协议认证支付服务协议'
+            })
+          } else if (scrollTop >= 2590 && scrollTop > 23) {
+            let bankName = this.state.bankName;
+            this.setState({
+              showTitle: true,
+            })
+            if (bankName[0] == '中国农业银行' || bankName[0] == '农业银行') {
+              this.setState({
+                title: '快捷支付授权扣款三方协议',
+              })
+            } else if (bankName[0] == '中国银行') {
+              this.setState({
+                title: '中国银行股份有限公司借记卡快捷支付服务协议（总行版）',
+              })
+            } else if (bankName[0] == '中国建设银行' || bankName[0] == '建设银行') {
+              this.setState({
+                title: '中国建设银行总对总快捷客户授权协议',
+              })
+            } else if (bankName[0] == '中国工商银行' || bankName[0] == '工商银行') {
+              this.setState({
+                title: '中国工商银行快捷支付业务服务协议',
+              })
+            }
+          } else {
+            this.setState({
+              showTitle: false,
+              title: '委托扣款授权书'
+            })
+          }
+
+          //按钮
+          if (offsetHeight + scrollTop >= scrollHeight) {
             this.setState({
               toDisabled: false
             })
-          }else{
+          } else {
             this.setState({
               toDisabled: true
             })
           }
         })
       }
-    },200)
-    
+    }, 200)
+
 
   }
 
@@ -299,16 +340,19 @@ export default class AddBankPhoneForm extends React.Component {
           <List.Item extra={this.state.cardNo && this.state.cardNo.substring(0, 4) + '****' + this.state.cardNo.substring(this.state.cardNo.length - 4)} arrow="horizontal">
             银行卡号
           </List.Item>
-          <Picker
-            data={this.state.bank}
-            {...getFieldProps("bank")}
-            cols={1}
-            className="forss"
-            value={bankName}
-            onChange={this.onChangeBankName}
-          >
-            <List.Item arrow="horizontal">所属银行</List.Item>
-          </Picker>
+          {detail.bankName ? <List.Item extra={detail.bankName} arrow="horizontal">
+            所属银行
+          </List.Item> :
+            <Picker
+              data={this.state.bank}
+              {...getFieldProps("bank")}
+              cols={1}
+              className="forss"
+              value={bankName}
+              onChange={this.onChangeBankName}
+            >
+              <List.Item arrow="horizontal">所属银行</List.Item>
+            </Picker>}
           <InputItem
             className="bankCard"
             type="number"
@@ -340,12 +384,12 @@ export default class AddBankPhoneForm extends React.Component {
                 }}
               />
             )}
-          {detail && <span>我已完全阅读并同意<b onClick={this.showProtocol}>《委托扣款授权书》、《宝付协议认证支付服务协议》</b>
-            { bankName[0] == '中国工商银行' &&<b onClick={this.showProtocol}>、《银行用户服务协议》</b>}
-            { bankName[0] == '中国农业银行' &&  <b onClick={this.showProtocol}>、《银行用户服务协议》</b> }
-            { bankName[0] == '中国银行' &&<b onClick={this.showProtocol}>、《银行用户服务协议》</b> }
-            { bankName[0] == '中国建设银行' &&<b onClick={this.showProtocol}>、《银行用户服务协议》</b>}
-            
+          {detail && <span>我已完全阅读并同意<b onClick={this.showProtocol}>《委托扣款授权书》《宝付协议认证支付服务协议》</b>
+            {bankName[0] == '中国工商银行' || bankName[0] == '工商银行' && <b onClick={this.showProtocol}>《银行用户服务协议》</b>}
+            {bankName[0] == '中国农业银行' || bankName[0] == '农业银行' && <b onClick={this.showProtocol}>《银行用户服务协议》</b>}
+            {bankName[0] == '中国银行' && <b onClick={this.showProtocol}>《银行用户服务协议》</b>}
+            {bankName[0] == '中国建设银行' || bankName[0] == '建设银行' && <b onClick={this.showProtocol}>《银行用户服务协议》</b>}
+
           </span>}
         </div>
         <Button
@@ -359,16 +403,15 @@ export default class AddBankPhoneForm extends React.Component {
         </Button>
         <Modal
           popup
-          title=""
+          title={this.state.showTitle && this.state.title}
           visible={this.state.showProtocol}
           maskClosable
           animationType="slide-up"
-
         >
           <div className="title">
             <div className='Modal_content protocol'>
               <div style={{ textAlign: 'center', fontSize: '18px', fontWeight: '800', marginBottom: '15px' }}>委托扣款授权书</div>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;鉴于借款人：	{this.state.protocolData&&this.state.protocolData.customerName}   (即授权人）与出借人北京聚宝小额贷款有限公司签署的<span className='font'>《借款服务授信合同》、《个人单笔借款合同》</span>（以下简称“借款协议”）,现授权人郑重声明已仔细阅知、理解下述各项规定并同意遵守：<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;鉴于借款人：	{this.state.protocolData && this.state.protocolData.customerName}   (即授权人）与出借人北京聚宝小额贷款有限公司签署的<span className='font'>《个人借款额度合同》、《个人单笔借款合同》</span>（以下简称“借款协议”）,现授权人郑重声明已仔细阅知、理解下述各项规定并同意遵守：<br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一、授权人同意被授权人在借款协议约定的限期内（即借款协议签订之日起至借款协议项下的借款全部清偿之日），委托银行或第三方支付机构从本授权书指定的账户内划付应付的费用（包括但不限于借款本金、利息、罚息、 服务费及其他费用）。<br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二、授权人在指定账户中必须保证银行卡状态正常并留有足够余额，否则因账户余额不足或不可归责于被授权人委托方的任何事由，导致无法及时扣款或扣款错误、失败，责任由授权人自行承担。<br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;三、 借款协议效力中止或终止后，本授权书效力同时中止或终止，被授权人暂停或终止委托划付款项，借款协议效力恢复后，本授权书效力随即恢复。<br />
@@ -376,21 +419,21 @@ export default class AddBankPhoneForm extends React.Component {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;五、授权人同意终止授权或变更账户、通讯地址时，在当期款项交付日3 0 个工作日前向被授权人递交书面通知，否则行承担所造成的风险损失。<br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;六、授权人保证本授权书的真实性、合法性、有效性.被授权人依裾本授权书进行的委托扣款操作引起的一切法律纠纷或风险，由授权人独立承担或解决。<br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;七、授权人资料:<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;银行卡户名 : {this.state.protocolData&&this.state.protocolData.AccountName}  <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;银行卡户名 : {this.state.protocolData && this.state.protocolData.customerName}  <br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;银行卡开户银行 : {this.state.protocolData && this.state.protocolData.bankName} <br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;银行卡账号 : {this.state.protocolData && this.state.protocolData.accountNo} <br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;身份证号码 :{this.state.protocolData && this.state.protocolData.identityNo}<br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联系手机 : {this.state.protocolData && this.state.protocolData.phone} <br />
 
               <div className='div'>
-        <span>授权人(电子签章)： {this.protocolData && this.protocolData.customerName}</span>
-                <span>被授权人（电子签章）****</span>
+                <span>授权人(电子签章)： {this.state.protocolData && this.state.protocolData.customerName}</span>
+                <span>被授权人（电子签章）: </span>
               </div>
               <div >{Protocol.paymentProtocol}</div>
-              { bankName[0] == '中国农业银行' && <div >{Protocol.agriculture}</div>}
-              { bankName[0] == '中国工商银行' && <div >{Protocol.IndustryAndCommerce}</div>}
-              { bankName[0] == '中国建设银行' && <div >{Protocol.construction}</div>}
-              { bankName[0] == '中国银行' && <div >{Protocol.BankOfChina}</div>}
+              {bankName[0] == '中国农业银行' || bankName[0] == '农业银行' && <div >{Protocol.agriculture}</div>}
+              {bankName[0] == '中国工商银行' || bankName[0] == '工商银行' && <div >{Protocol.IndustryAndCommerce}</div>}
+              {bankName[0] == '中国建设银行' || bankName[0] == '建设银行' && <div >{Protocol.construction}</div>}
+              {bankName[0] == '中国银行' && <div >{Protocol.BankOfChina}</div>}
             </div>
 
           </div>
@@ -412,7 +455,7 @@ export default class AddBankPhoneForm extends React.Component {
                   this.cLickRadio(true)
               }}
             >
-             请上滑看完本条款再同意
+              请上滑看完本条款再同意
             </Button>
           </div>
         </Modal>

@@ -41,9 +41,9 @@ class IdcardDiscern extends React.Component {
         requestPermission,
         // FNImageClip,
       });
-      
+
     };
-  
+
   }
 
   uploadIdcardFrontImg = () => {
@@ -56,55 +56,24 @@ class IdcardDiscern extends React.Component {
 
   openTips = str => {
     operation([
-      {text: "选择照片", onPress: () => this.getChoice("Choice", str)},
+      { text: "选择照片", onPress: () => this.getChoice("Choice", str) },
       { text: "照相机", onPress: () => this.getCamera("camera", str) },
       { text: "相册", onPress: () => this.getAlbum("album", str) },
       { text: "取消", onPress: () => this.getcancel("cancel", str) },
     ]);
   };
 
-  // getFNImageClip = (url) => {
-  //   this.state.FNImageClip.open({
-  //     rect: {
-  //       x: 0,
-  //       y: 0,
-  //       w: api.winWidth,
-  //       h: api.winHeight
-  //     },
-  //     srcPath: url,
-  //     isHideGrid: true,
-  //     highDefinition: true,
-  //     style: {
-  //       mask: 'rgba(55,55,55,0.3)',
-  //       clip: {
-  //         w: 320,
-  //         h: 200,
-  //         x: 27,
-  //         y: 200,
-  //         borderColor: '#0f0',
-  //         borderWidth: 1,
-  //         appearance: 'rectangle'
-  //       }
-  //     },
-  //     mode:"image",
-  //   }, function (ret, err) {
-  //     if (ret) {
-  //       alert(JSON.stringify(ret));
-  //     } else {
-  //       alert(JSON.stringify(err));
-  //     }
-  //   });
-  // }
+
 
   getcancel = (str, type) => {
-    
+
   }
 
   getCamera = (str, type) => {   //调用相机
     const hasPermission =
       this.state.hasPermission &&
-      this.state.hasPermission({ list: ["camera",'photos'] });
-    if (hasPermission[0].granted&&hasPermission[1].granted) {
+      this.state.hasPermission({ list: ["camera", 'photos'] });
+    if (hasPermission[0].granted && hasPermission[1].granted) {
       this.uploadImg(str, type)
     } else {
       // 申请权限
@@ -114,7 +83,7 @@ class IdcardDiscern extends React.Component {
           text: "去允许",
           onPress: () => {
             this.state.requestPermission &&
-              this.state.requestPermission({ list: ["camera",'photos'], code: 1 }, function (
+              this.state.requestPermission({ list: ["camera", 'photos'], code: 1 }, function (
                 ret
               ) { });
           }
@@ -124,29 +93,29 @@ class IdcardDiscern extends React.Component {
   }
 
   getAlbum = (str, type) => {   //调用相册
-      const hasPermission =
-        this.state.hasPermission &&
-        this.state.hasPermission({ list: ["photos"] });
-      console.log(JSON.stringify(hasPermission))
-      if (hasPermission[0].granted) {
-        this.uploadImg(str, type)
-      } else {
-        // 申请权限
-        alert("权限申请", "为保证您正常地使用此功能，需要获取您的相册权限，请允许。", [
-          { text: "取消", onPress: () => { } },
-          {
-            text: "去允许",
-            onPress: () => {
-              this.state.requestPermission &&
-                this.state.requestPermission({ list: ["photos"], code: 1 }, function (
-                  ret
-                ) { });
-            }
+    const hasPermission =
+      this.state.hasPermission &&
+      this.state.hasPermission({ list: ["photos"] });
+    // console.log(JSON.stringify(hasPermission))
+    if (hasPermission[0].granted) {
+      this.uploadImg(str, type)
+    } else {
+      // 申请权限
+      alert("权限申请", "为保证您正常地使用此功能，需要获取您的相册权限，请允许。", [
+        { text: "取消", onPress: () => { } },
+        {
+          text: "去允许",
+          onPress: () => {
+            this.state.requestPermission &&
+              this.state.requestPermission({ list: ["photos"], code: 1 }, function (
+                ret
+              ) { });
           }
-        ])
-        
-      }
+        }
+      ])
+
     }
+  }
 
   uploadImg = (str, type) => {
     const that = this;
@@ -157,7 +126,7 @@ class IdcardDiscern extends React.Component {
         mediaValue: "pic",
         // destinationType: "url",
         destinationType: "base64",
-        quality: 100,
+        quality: 99,
         targetWidth: 1280,
         targetHeight: 800,
       },
@@ -212,6 +181,8 @@ class IdcardDiscern extends React.Component {
     const that = this
     const cardPhoto1 = that.state.cardPhoto1.substr(that.state.cardPhoto1.indexOf(",") + 1);
     const cardPhoto2 = that.state.cardPhoto2.substr(that.state.cardPhoto2.indexOf(",") + 1)
+    // console.log(JSON.stringify(cardPhoto1))
+    // console.log(JSON.stringify(cardPhoto2))
     const data1 = {
       file: cardPhoto1,
       fileType: "ID_CARD_1"
@@ -220,7 +191,7 @@ class IdcardDiscern extends React.Component {
       file: cardPhoto2,
       fileType: "ID_CARD_2"
     };
-    this.setState({
+    that.setState({
       animating: true
     })
     window.api.ajax(
@@ -237,8 +208,16 @@ class IdcardDiscern extends React.Component {
         }
       },
       function (ret, err) {
-        console.log(JSON.stringify(ret));
-        if (ret.code === "200") {
+        // console.log(JSON.stringify(ret))
+        // console.log(JSON.stringify(err))
+        
+        if (ret == undefined || err && err.code == 0 || err && err.code == '0') {
+          Toast.info('上传失败，请重新上传正面，保证图片的清晰度，光亮度', 4)
+          that.setState({
+            animating: false
+          })
+        }
+         if (ret.code == "200" || ret.code == 200) {
           window.api.ajax(
             {
               url: getLink() + getApi("ocrIdCard"),
@@ -252,12 +231,20 @@ class IdcardDiscern extends React.Component {
                 body: JSON.stringify(data2)
               }
             },
-            function (ret, err) {
-              console.log(JSON.stringify(ret));
-              that.setState({
-                animating: false
-              })
-              if (ret.code === "200") {
+            function (res, error) {
+              // console.log(JSON.stringify(res))
+              // console.log(JSON.stringify(error))
+              if (ret == undefined || ret == 'undefined' || error && error.code == 0 || error && error.code == '0') {
+                Toast.info('上传失败，请重新上传反面，保证图片的清晰度，光亮度', 4)
+                that.setState({
+                  animating: false
+                })
+              }
+
+              if (res.code == "200") {
+                that.setState({
+                  animating: false
+                })
                 window.api.openFrame({
                   name: "faceRecognition",
                   url: "./faceRecognition.html",
@@ -273,11 +260,11 @@ class IdcardDiscern extends React.Component {
                 that.setState({
                   animating: false
                 })
-                if (err) {
+                if (error) {
                   Toast.info("请求失败", 3)
 
                 } else {
-                  Toast.info(ret.message, 3)
+                  Toast.info(res.message, 3)
 
                 }
               }
@@ -285,7 +272,6 @@ class IdcardDiscern extends React.Component {
           );
 
         } else {
-          console.log(JSON.stringify(err));
           that.setState({
             animating: false
           })
@@ -303,6 +289,7 @@ class IdcardDiscern extends React.Component {
   };
 
   render() {
+    let { animating } = this.state;
     return (
       <div
         className="rateCalc"
@@ -357,7 +344,7 @@ class IdcardDiscern extends React.Component {
             )}
         </div>
         <div
-        className="worning"
+          className="worning"
         >
           请保证证件在有效期限内
         </div>
@@ -365,7 +352,7 @@ class IdcardDiscern extends React.Component {
           disabled={this.state.disabled}
           className="next"
           onClick={() =>
-            alert("照片上传", <p>是否上传身份证照片？</p>, [
+            alert("照片上传", '是否上传身份证照片？', [
               { text: "返回", onPress: () => { } },
               {
                 text: "确定",
@@ -379,8 +366,8 @@ class IdcardDiscern extends React.Component {
           确认上传
         </Button>
         <div style={{ height: "30px" }} />
-        <ActivityIndicator toast animating={this.state.animating} />
-        {this.state.animating&&<div className='loader_wrap'>
+        <ActivityIndicator toast animating={animating} />
+        {animating && <div className='loader_wrap'>
           <div className='loader_img'></div>
           <div className='loader_text'>加载中...</div>
         </div>}

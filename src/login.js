@@ -14,7 +14,7 @@ import { nonsense } from "antd-mobile/lib/picker";
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.myRef= React.createRef;
+    this.myRef = React.createRef;
     this.state = {
       type: "1",
       hidden: false,
@@ -41,7 +41,11 @@ export default class Login extends React.Component {
       picture: false, //是否显示图片验证码
       src: '', //图片验证码地址
       codeValue: '', //图片验证码
-     
+      showImg: true,
+      overduePopUp: false,//是否逾期提示
+      overdueDetails: {},//客户逾期信息查询
+      rets:{},
+      marginBottom:""
     };
   }
 
@@ -77,13 +81,13 @@ export default class Login extends React.Component {
 
   iconimg = () => {
     this.setState({
-      
+
     })
   }
 
   phoneOnChange = value => {
     // 手机输入
-    if(value.replace(/\s*/g, '').length < 11) {
+    if (value.replace(/\s*/g, '').length < 11) {
       this.setState({
         hasError: true,
         phone: value,
@@ -125,9 +129,10 @@ export default class Login extends React.Component {
 
   passwordLogin = () => {
     //密码登录
+    const that = this;
     let data = {
-      loginName: this.state.phone.replace(/\s*/g,""),
-      loginPassword: md5(this.state.passsword).toUpperCase(),
+      loginName: that.state.phone.replace(/\s*/g, ""),
+      loginPassword: md5(that.state.passsword).toUpperCase(),
       loginIp: returnCitySN["cip"]
     };
     const from = window.api.pageParam.from;
@@ -152,25 +157,96 @@ export default class Login extends React.Component {
           }
         },
         function (ret, err) {
-         
           if (ret.body.code === "200") {
             Toast.info("登录成功", 3)
-
             setH5Token(ret.body.data);
             setToken(ret.headers.Apptoken);
-            window.api.openFrame({
-              name: from,
-              url: "./" + from + ".html",
-              reload: true,
-              rect: {
-                w: "auto",
-                marginTop: window.api.safeArea.top,
-                marginBottom: marginBottom
+            let rets = ret
+            window.api.ajax(
+              {
+                url: getLink() + getApi("overdueDetail"),
+                method: "post",
+                dataType: "json",
+                headers: {
+                  "Content-Type": "application/json",
+                  Apptoken: window.localStorage.Apptoken
+                }
               },
-              useWKWebView: true,
-              historyGestureEnabled: true
-            });
-            window.api.closeFrame({ name: "login" });
+              function (ret, err) {
+                if (ret.code === "200") {
+                  that.setState({
+                    overdueDetails: ret.data,
+                    rets: {},
+                    marginBottom:""
+                  });
+                  if (ret.data.overdue) {
+                    that.setState({
+                      overduePopUp: true,
+                      rets:rets,
+                      marginBottom: marginBottom
+                    })
+                  } else {
+                    that.judgeJump(rets, from, marginBottom)
+                  }
+                } else {
+                  that.judgeJump(rets, from, marginBottom)
+                }
+              })
+            // if (ret.body.data.isNeed2CreditPage) { //true 非重叠客户 false 重叠客户
+            //   window.api.openFrame({
+            //     name: 'hnaIous',
+            //     url: "./hnaIous.html",
+            //     rect: {
+            //       w: "auto",
+            //       marginTop: window.api.safeArea.top,
+            //       marginBottom: window.api.safeArea.bottom
+
+            //     },
+            //     reload: true,
+            //     useWKWebView: true,
+            //     historyGestureEnabled: true
+            //   });
+            //   window.api.closeFrame({ name: "login" });
+            //   window.api.closeFrame({ name: "supplementProtocol" });
+            // } else 
+            // if (ret.body.data.isNeed2Sign) { //是否补充协议
+            //   window.api.openFrame({
+            //     url: "./supplementProtocol.html",
+            //     name: "supplementProtocol",
+            //     rect: {
+            //       w: "auto",
+            //       marginTop: window.api.safeArea.top,
+            //       marginBottom: window.api.safeArea.bottom
+            //     },
+            //     pageParam: {
+            //       data: 'login',
+            //       isNeed2CreditPage: ret.body.data.isNeed2CreditPage,
+            //       from: from,
+            //       isNeed2SignCustomerAuth: ret.body.data.isNeed2SignCustomerAuth
+
+            //     },
+            //     useWKWebView: true,
+            //     historyGestureEnabled: true,
+
+            //   });
+            //   window.api.closeFrame({ name: "login" });
+
+            // } else {
+            //     window.api.openFrame({
+            //       name: from,
+            //       url: "./" + from + ".html",
+            //       reload: true,
+            //       rect: {
+            //         w: "auto",
+            //         marginTop: window.api.safeArea.top,
+            //         marginBottom: marginBottom
+            //       },
+            //       reload: true,
+            //       useWKWebView: true,
+            //       historyGestureEnabled: true
+            //     });
+            //     window.api.closeFrame({ name: "login" });
+            // }
           } else {
             if (err) {
               Toast.info("请求失败", 3)
@@ -262,7 +338,7 @@ export default class Login extends React.Component {
 
     this.setState({
       picture: true,
-      src: getLink() + getApi('loginCaptcha') + '/' + this.state.phone.replace(/\s*/g,"") + '?t=' + new Date().getTime(),
+      src: getLink() + getApi('loginCaptcha') + '/' + this.state.phone.replace(/\s*/g, "") + '?t=' + new Date().getTime(),
 
     });
 
@@ -270,7 +346,7 @@ export default class Login extends React.Component {
 
   //输入验证码，校验登录按钮
   verificationOnChange = (value) => {
-  
+
     const from = window.api.pageParam.from;
     if (value == "") {
       this.setState({
@@ -278,7 +354,7 @@ export default class Login extends React.Component {
         smsCode: value
       });
     } else {
-    
+
       if (this.state.checked) {
         this.setState({
           countDisabled: false,
@@ -292,80 +368,51 @@ export default class Login extends React.Component {
       };
       if (value.length === 4 && this.state.checked && !this.state.newUser) {
 
-          let data = {
-            phone: this.state.phone,
-            smsCode: value,
-            loginIp: returnCitySN["cip"]
-          };
-          let marginBottom = "";
-          if (from === "userInfo") {
-            marginBottom = window.api.safeArea.bottom + 50;
-          } else {
-            marginBottom = window.api.safeArea.bottom;
-          }
-          if (window.api) {
-            window.api.ajax(
-              {
-                url: getLink() + getApi("loginSmsLogin"),
-                method: "post",
-                returnAll: true,
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                dataType: "json",
-                data: {
-                  body: data
-                }
+        let data = {
+          phone: this.state.phone,
+          smsCode: value,
+          loginIp: returnCitySN["cip"]
+        };
+        let marginBottom = "";
+        if (from === "userInfo") {
+          marginBottom = window.api.safeArea.bottom + 50;
+        } else {
+          marginBottom = window.api.safeArea.bottom;
+        }
+        if (window.api) {
+          window.api.ajax(
+            {
+              url: getLink() + getApi("loginSmsLogin"),
+              method: "post",
+              returnAll: true,
+              headers: {
+                "Content-Type": "application/json"
               },
-              function (ret, err) {
-                if (ret.body.code === "200") {
-                  Toast.info('登录成功', 3)
+              dataType: "json",
+              data: {
+                body: data
+              }
+            },
+            function (ret, err) {
 
-                  setH5Token(ret.body.data.token);
-                  setToken(ret.headers.Apptoken);
-                  if (ret.body.data.setLoginPassword === false) {
-                    window.api.openFrame({
-                      url: "./setPassword.html",
-                      name: "setPassword",
-                      rect: {
-                        w: "auto",
-                        marginTop: window.api.safeArea.top,
-                        marginBottom: window.api.safeArea.bottom
-                      },
-                      pageParam: {
-                        from: from,
-                      },
-                      useWKWebView: true,
-                      historyGestureEnabled: true,
+              if (ret.body.code === "200") {
+                Toast.info('登录成功', 3)
 
-                    });
-                  } else {
-                    window.api.openFrame({
-                      name: from,
-                      url: "./" + from + ".html",
-                      reload: true,
-                      rect: {
-                        w: "auto",
-                        marginTop: window.api.safeArea.top,
-                        marginBottom: marginBottom
-                      },
-                      useWKWebView: true,
-                      historyGestureEnabled: true
-                    });
-                    window.api.closeFrame({ name: "login" });
-                  }
+                setH5Token(ret.body.data.token);
+                setToken(ret.headers.Apptoken);
+
+              } else {
+                if (err) {
+                  Toast.info("请求失败", 3)
+
                 } else {
-                  if (err) {
-                    Toast.info("请求失败", 3)
+                  // Toast.info(ret.body.message, 3)
 
-                  } else {
-                    // Toast.info(ret.body.message, 3)
-
-                  }
                 }
               }
-            );
-          }
+            }
+          );
+        }
 
       }
     }
@@ -373,9 +420,10 @@ export default class Login extends React.Component {
 
   codeLogin = () => {
     //  验证码登录
+    const that = this;
     let data = {
-      phone: this.state.phone.replace(/\s*/g,""),
-      smsCode: this.state.smsCode,
+      phone: that.state.phone.replace(/\s*/g, ""),
+      smsCode: that.state.smsCode,
       loginIp: returnCitySN["cip"]
     };
     const from = window.api.pageParam.from;
@@ -400,43 +448,59 @@ export default class Login extends React.Component {
           }
         },
         function (ret, err) {
-       
           if (ret.body.code === "200") {
             Toast.info('登录成功', 3)
-
             setH5Token(ret.body.data.token);
             setToken(ret.headers.Apptoken);
-            if (ret.body.data.setLoginPassword === false) {
-              window.api.openFrame({
-                url: "./setPassword.html",
-                name: "setPassword",
-                rect: {
-                  w: "auto",
-                  marginTop: window.api.safeArea.top,
-                  marginBottom: window.api.safeArea.bottom
-                },
-                pageParam: {
-                  from: from,
-                },
-                useWKWebView: true,
-                historyGestureEnabled: true,
+            let rets = ret 
+            window.api.ajax(
+              {
+                url: getLink() + getApi("overdueDetail"),
+                method: "post",
+                dataType: "json",
+                headers: {
+                  "Content-Type": "application/json",
+                  Apptoken: window.localStorage.Apptoken
+                }
+              },
+              function (ret, err) {
+                if (ret.code === "200") {
+                  that.setState({
+                    overdueDetails: ret.data,
+                    rets:{},
+                    marginBottom: ""
+                  });
+                  console.log("2:" + JSON.stringify(ret.data))
+                  if (ret.data.overdue) {
+                    that.setState({
+                      overduePopUp: true,
+                      rets:rets,
+                      marginBottom: marginBottom
+                    })
+                  } else {
+                    that.judgeJump(rets, from, marginBottom)
+                  }
+                }else {
+                  that.judgeJump(rets, from, marginBottom)
+                }
+              })
+            // if (ret.body.data.isNeed2CreditPage) { //true 非重叠客户 false 重叠客户
+            //   window.api.openFrame({
+            //     name: 'hnaIous',
+            //     url: "./hnaIous.html",
+            //     rect: {
+            //       w: "auto",
+            //       marginTop: window.api.safeArea.top,
+            //       marginBottom: window.api.safeArea.bottom
 
-              });
-            } else {
-              window.api.openFrame({
-                name: from,
-                url: "./" + from + ".html",
-                reload: true,
-                rect: {
-                  w: "auto",
-                  marginTop: window.api.safeArea.top,
-                  marginBottom: marginBottom
-                },
-                useWKWebView: true,
-                historyGestureEnabled: true
-              });
-              window.api.closeFrame({ name: "login" });
-            }
+            //     },
+            //     reload: true,
+            //     useWKWebView: true,
+            //     historyGestureEnabled: true
+            //   });
+            //   window.api.closeFrame({ name: "login" });
+            //   window.api.closeFrame({ name: "supplementProtocol" });
+            // } else
           } else {
             if (err) {
               Toast.info("请求失败", 3)
@@ -461,6 +525,62 @@ export default class Login extends React.Component {
     }
   };
 
+  judgeJump = (ret, from, marginBottom) =>{
+    if (ret.body.data.isNeed2Sign) {   //是否补充协议
+      window.api.openFrame({
+        url: "./supplementProtocol.html",
+        name: "supplementProtocol",
+        rect: {
+          w: "auto",
+          marginTop: window.api.safeArea.top,
+          marginBottom: window.api.safeArea.bottom
+        },
+        pageParam: {
+          data: 'login',
+          isNeed2CreditPage: ret.body.data.isNeed2CreditPage,
+          from: from,
+          isNeed2SignCustomerAuth: ret.body.data.isNeed2SignCustomerAuth
+        },
+        useWKWebView: true,
+        historyGestureEnabled: true,
+
+      });
+      window.api.closeFrame({ name: "login" });
+
+    } else if (ret.body.data.setLoginPassword == false) {
+      window.api.openFrame({
+        url: "./setPassword.html",
+        name: "setPassword",
+        rect: {
+          w: "auto",
+          marginTop: window.api.safeArea.top,
+          marginBottom: window.api.safeArea.bottom
+        },
+        reload: true,
+        pageParam: {
+          from: from,
+        },
+        useWKWebView: true,
+        historyGestureEnabled: true,
+
+      });
+    } else {
+      window.api.openFrame({
+        name: from,
+        url: "./" + from + ".html",
+        rect: {
+          w: "auto",
+          marginTop: window.api.safeArea.top,
+          marginBottom: marginBottom
+        },
+        reload: true,
+        useWKWebView: true,
+        historyGestureEnabled: true
+      });
+      window.api.closeFrame({ name: "login" });
+    }
+  }
+
   forgetPassword = () => { // 忘记密码
     const from = window.api.pageParam.from;
     window.api.openFrame({
@@ -482,13 +602,13 @@ export default class Login extends React.Component {
 
   //图片验证码
   changeCode = (value) => {
-   
+
     let that = this;
     this.setState({
       codeValue: value
     })
     if (value.replace(/\s+/g, "").length == 4) {
-    
+
       window.api.ajax({
         url: getLink() + getApi('sendSmsCode'),
         method: 'post',
@@ -497,7 +617,7 @@ export default class Login extends React.Component {
         },
         data: {
           body: {
-            phone: that.state.phone.replace(/\s*/g,""),
+            phone: that.state.phone.replace(/\s*/g, ""),
             captcha: value,
             loginIp: returnCitySN["cip"]
           }
@@ -569,16 +689,26 @@ export default class Login extends React.Component {
     }
   }
 
-  scroll=()=>{
-      let that = this;
-      if(that.state.newUser){
-        setTimeout(()=>{
-          window.scroll(0,130)
-        },250)  
-      }
-     
+  scroll = () => {
+    let that = this;
+    if (that.state.newUser) {
+      setTimeout(() => {
+        window.scroll(0, 110);
+        that.setState({
+          showImg: false
+        })
+      }, 250)
+    }
+
   }
- 
+
+  onClose = () => {
+    this.setState({ overduePopUp: false });
+    const from = window.api.pageParam.from;
+    console.log("we: "+JSON.stringify(from))
+    this.judgeJump(this.state.rets, from, this.state.marginBottom)
+  }
+
 
   render() {
 
@@ -615,7 +745,7 @@ export default class Login extends React.Component {
             value={this.state.phone}
             clear
             type='phone'
-            // maxLength={11}
+          // maxLength={11}
           />
           {this.state.error === "" ? null : (
             <p className="error">{this.state.error}</p>
@@ -640,9 +770,10 @@ export default class Login extends React.Component {
               placeholder="请输入手机验证码"
               onChange={this.verificationOnChange}
               value={this.state.smsCode}
-              maxLength={6}
+              maxLength={4}
               clear
               onFocus={this.scroll}
+              onBlur={() => { this.setState({ showImg: true }) }}
             />
             <Button
               className="coundDown"
@@ -681,8 +812,8 @@ export default class Login extends React.Component {
             请确认已阅读并同意
           </span>
           <div className="protocol">
-            <span onClick={() => this.setState({ showProtocol: true })}>《海航钱包服务协议》</span>
-            <span onClick={() => { this.setState({ privacyAgreement: true }) }}>《海航钱包隐私协议》</span>
+            <span onClick={() => this.setState({ showProtocol: true })}>《航旅分期服务协议》</span>
+            <span onClick={() => { this.setState({ privacyAgreement: true }) }}>《航旅分期隐私协议》</span>
           </div>
           <p>未注册时将自动注册账号</p>
         </div>
@@ -701,7 +832,7 @@ export default class Login extends React.Component {
           type='phone'
           value={this.state.phone}
           onFocus={this.iconimg}
-          // maxLength={11}
+        // maxLength={11}
         />
         {this.state.error === "" ? null : (
           <p className="error">{this.state.error}</p>
@@ -779,11 +910,11 @@ export default class Login extends React.Component {
         </NavBar>
 
         <div className='login_content_wrap'>
-          <img
+          {this.state.showImg && <img
             className="logo"
             src={require("./assets/image/login-logo.png")}
             alt=""
-          />
+          />}
           <div className='login_content'>
             <div onClick={() => this.setState({ type: '1' })} className={this.state.type == '1' ? 'login_title' : 'login_title2'} >验证码登录/注册</div>
             <div onClick={() => this.setState({ type: '2' })} className={this.state.type == '2' ? 'login_title' : 'login_title2'} >密码登录</div>
@@ -794,7 +925,7 @@ export default class Login extends React.Component {
 
           <Modal
             popup
-            title="海航钱包服务协议"
+            title="航旅分期服务协议"
             visible={this.state.showProtocol}
             closable
             maskClosable
@@ -807,7 +938,7 @@ export default class Login extends React.Component {
           </Modal>
           <Modal
             popup
-            title="海航钱包隐私协议"
+            title="航旅分期隐私协议"
             visible={this.state.privacyAgreement}
             closable
             maskClosable
@@ -821,6 +952,20 @@ export default class Login extends React.Component {
 
           {/*图片验证码*/}
           {picture && pictureModule}
+          {/*客户逾期信息提醒 */}
+          <Modal
+            className="overduePopUp"
+            visible={this.state.overduePopUp}
+            closable
+            onClose={this.onClose}
+            popup
+          >
+            <h2>逾期通知</h2>
+            <p>
+              尊敬的{this.state.overdueDetails.customerName}客户,截止到{this.state.overdueDetails.closingDate},您有<span style={{color:"#e1514c"}}>逾期金额{this.state.overdueDetails.overdueAmount}元</span>尚未结清，请您尽快还款，以免影响<span style={{color:"#e1514c"}}>个人征信</span>。<br />
+              <p>如您拒不还款，我们将移交平台法务部门<span style={{ color: "#e1514c" }}>司法处理</span></p>
+            </p>
+          </Modal>
         </div>
       </div>
     );

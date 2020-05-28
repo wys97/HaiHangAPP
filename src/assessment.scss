@@ -44,12 +44,42 @@
       font-size: 16px;
       display: flex;
       align-items: center;
-      justify-content: center;
+     justify-content: center;
+      flex-direction: column;
       div{
         padding: 5px 10px;
         border-radius: 8;
         color: #999;
+        text-align: center;
+        line-height: 23px;
       }
+  
+    }
+    .occupied{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      margin-top: px2rem(160);
+      flex-direction: column;
+      img{
+        width:px2rem(120);
+        height: auto;
+        margin-bottom: 25px;
+      }
+      div{
+        padding: 5px 10px;
+        border-radius: 8;
+        color: #999;
+        width: px2rem(180);
+        text-align: center;
+        line-height: 23px;
+      }
+  
     }
 
 
@@ -97,4 +127,11 @@
       color: #fff;
     
   }
-  
+  .time{
+    display: flex;
+    align-items: center;
+    span{
+      margin-right: 5px;
+      font-size: 12px;
+    }
+  }

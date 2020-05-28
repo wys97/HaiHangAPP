@@ -47,6 +47,7 @@ export function getApi(apiName) {  //api 接口地址
         "updateToken": "/app-api/update-token",                 //刷新小贷token
         "limitDetail": "/app-api/home/limit-detail",           //额度详情
         "limitDisplay": "/app-api/home/limit-display",              //首页额度显示
+        "overdueDetail": "/app-api/home/overdue-detail",            //客户逾期信息查询
         //积分、用户信息
         "checkStatus": "/app-api/points/check-status",               //用户信息和签到状态查询
         "areaInfo": "/app-api/points/area-info",                    //地区信息
@@ -66,7 +67,7 @@ export function getApi(apiName) {  //api 接口地址
         "loginPasswordLogin": "/app-api/login/password-login",   //密码登录
         "loginSmsLogin": "/app-api/login/sms-login",            //手机验证码登录
         "loginPasswordSetting": "/app-api/login/password-setting",   //设置登录密码
-        "loginout": "/app-api/login/loginout",                  //登出
+        "loginout": '/app-api/logout',                  //登出
         "sendSmsCode": "/app-api/login/send-sms-code",          //发送登录验证码
         "vaildCmsCode": "/app-api/login/reset-password/vaild-sms-code",       //忘记密码-验证短信码
         "verifyIdentity": "/app-api/login/reset-password/verify-identity",          // 忘记密码 - 验证身份证号码
@@ -78,27 +79,51 @@ export function getApi(apiName) {  //api 接口地址
         "passwordModify": "/app-api/mine/password-modify",                  //修改密码
         "creditAgreementParam": "/app-api/credit/credit-agreement-param",                  //协议用户信息详情
         "withholdAgreementParam": "/app-api/credit/withhold-agreement-param",                  //协议用户信息详情  代扣协议
+        'supplement': '/app-api/credit/sign-hs-supplement',   //签署恒生数据迁移补充协议
+        'isNeed2Sign': '/app-api/mine/is-need2-sign',   //判断同步额度按钮是否显示
+        'showCustomer': '/app-api/credit/is-show-customer-auth', //是否显示 用户授权委托书
+        'supplwementData':'/app-api/credit/hs-supplwement-data', //判断同步额度变量
 
         //公共分类
         "sendCode": "/app-api/sms/send-code",              //发送验证码
         "vaildSmsCode": "/app-api/sms/vaild-sms-code",      //验证验证码
-       
+
     };
 
     return apiList[apiName]
 
 };
 export function getLink() {
-    // const link = "https://api.jbhloan.com"           //正式
-    // const link = "http://ccs46.tunnel.onepaypass.com"        //测试
-    const link = "http://10.188.0.151:8080"        //测试
+    // const link = "https://api.jbhloan.com"           //生产
+    const link = "http://ccs46.tunnel.onepaypass.com"         //测试
+    // const link = "http://ccs45.tunnel.onepaypass.com"         //预生产
+    // const link = "https://preccs.jbhloan.com/"        //灰度
+    // const link = "http://10.188.0.151:8080"        //联调测试
     return link
 };
+
+export function getBanner() {//banner地址
+    const bannerList = [
+        { banner:"/images/banner/banner2x.png", bannerUrl: "/operation-guide.html"},
+        { banner: "/images/banner/banner3x.png", bannerUrl:""}
+    ];
+    bannerList.map((ite,index)=>{
+        bannerList[index].banner = 'https://hnhk.jbhloan.com' + ite.banner    //测试
+        //bannerList[index].banner = 'https://hnhk-uat.jbhloan.com' + ite.banner        //预生产
+        // bannerList[index].banner = 'https://hkbt.jbhloan.com' + ite.banner              //生产
+
+        bannerList[index].bannerUrl = 'https://hnhk.jbhloan.com' + ite.bannerUrl    //测试
+        //bannerList[index].bannerUrl = 'https://hnhk-uat.jbhloan.com' + ite.bannerUrl        //预生产
+        // bannerList[index].bannerUrl = 'https://hkbt.jbhloan.com' + ite.bannerUrl            //生产
+    })
+    return bannerList
+}
+
 export function ticketOffice() {
-    
+
     // const Office = 'http://m.hnair.com/'    //买机票  生产地址链接
     const Office = 'https://uat-app.hnair.com/app_web_nightly/index.html#/?_k=nfielw'   //买机票  测试地址链接
-    
+
     return Office
 };
 

@@ -140,7 +140,7 @@ export default class Updata extends React.Component {
           <div className='head'>
             <img src={require('./assets/image/login-logo.png')} className='img' />
             <div className='head_right'>
-              <p>海航钱包</p>
+              <p>航旅分期</p>
               <p>当前版本: {that.state.appVersion}</p>
               <p>最新版本: {that.state.data.versionNo}</p>
             </div>

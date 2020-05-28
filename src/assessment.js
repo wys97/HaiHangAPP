@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Button, List, NavBar, Modal, Icon, ActivityIndicator, Toast} from "antd-mobile";
+import { Button, List, NavBar, Modal, Icon, ActivityIndicator, Toast } from "antd-mobile";
 import { getLink, getApi, getMenu } from "./linkConfig";
 import "./assets/reset.scss";
 import "./assessment.scss";
@@ -18,25 +18,30 @@ export default class Assessment extends React.Component {
       displayModule: 0,    //显示的模块    1 一个合同时   2  两个合同或以上  3 没有合同      
       data: [],  //请求的数据
       details: false,    //是否显示详情
-      item:{}, //详情数据
-      animating: false
+      item: {}, //详情数据
+      animating: false,
+      pdfReader: null,
+      closePDF: false,
     };
   }
 
   componentWillMount() {
-    this.setState({
-      animating: true
-    })
     const that = this;
     window.apiready = function () {
+      const pdfReader = window.api.require("pdfReader");
+      that.setState({
+        animating: true,
+        pdfReader
+      })
       that.ajaxApi();
+      
     };
+
   }
-
-
+ 
   ajaxApi = () => {
+    let that = this;
     if (window.api) {
-    
       window.api.ajax(
         {
           url: getLink() + getApi("creditAssessment"),
@@ -55,25 +60,26 @@ export default class Assessment extends React.Component {
                 displayModule: 3,
                 animating: false
               });
-           
-            } else if (res.data.length == 1) {
-              this.setState({
-                displayModule: 1,
-                data: res.data,
-                animating: false
-              })
-            
-            } else {
+
+            } else if (res.data.length >= 1) {
+
               this.setState({
                 displayModule: 2,
                 data: res.data,
                 animating: false
               })
-           
+
+              // } else {
+              //   this.setState({
+              //     displayModule: 2,
+              //     data: res.data,
+              //     animating: false
+              //   })
+
             }
-          }else{
-            Toast.info(err.body.message,3)
-         
+          } else {
+            Toast.info(err.body.message, 3)
+
             this.setState({
               animating: false
             })
@@ -84,38 +90,76 @@ export default class Assessment extends React.Component {
     }
   }
   goBack = () => {
-    //返回上一页
-    window.api.openFrame({
-      url:'./userInfo.html',
-      name:'userInfo',
-      rect: {
-        w: "auto",
-        marginTop: window.api.safeArea.top,
-        marginBottom: window.api.safeArea.bottom+50
-      },
-      reload:true,
-      pageParam: {
-        from: 'securitySet',
-      },
-      
-      useWKWebView: true,
-      historyGestureEnabled: true
-    })
-    window.api.closeFrame();
+    //关闭pdf
+    if (this.state.closePDF) {
+      var pdfReader = window.api.require('pdfReader');
+      pdfReader.closePdfView();
+      this.setState({
+        closePDF: false
+      })
+    } else {
+      //返回上一页
+      window.api.openFrame({
+        url: './userInfo.html',
+        name: 'userInfo',
+        rect: {
+          w: "auto",
+          marginTop: window.api.safeArea.top,
+          marginBottom: window.api.safeArea.bottom + 50
+        },
+        reload: true,
+        pageParam: {
+          from: 'securitySet',
+        },
+
+        useWKWebView: true,
+        historyGestureEnabled: true
+      })
+      window.api.closeFrame();
+
+    }
+
   };
 
 
   showModalDetails = (item) => {
+    let systemType = window.api.systemType;
     this.setState({
-      details: true,
-      item:item,
-      animating:true
+      animating: true,
+      closePDF: true,
     })
-    setTimeout(()=>{
+    if(systemType == 'ios'){
+      let titleTop = document.getElementsByClassName('assessment_title')[0].scrollTop;
+      let offsetHeight = document.getElementsByClassName('assessment_title')[0].offsetHeight;
+      let h = document.getElementsByClassName('assessment')[0];
+      let top = document.body.clientHeight>667? titleTop + offsetHeight+44:titleTop + offsetHeight+20;
+      this.state.pdfReader.openPdfView({
+        rect:{
+          x:0,
+          y:Number(top),
+          w:'auto',
+          h:'auto'
+        },
+        path:getLink() + item.url,
+        fixed:true
+      });
+    }else{
+      this.state.pdfReader.open({
+        hidden:{
+          print: true,           
+          export: true,          
+          bookmark: true,         
+          email: true           
+        },
+        path: getLink() + item.url,
+          showLoading: true
+      });
+    }
+    setTimeout(() => {
       this.setState({
-        animating:false
+        animating: false
       })
-    },1500)
+    }, 1500)
   };
 
   render() {
@@ -123,7 +167,7 @@ export default class Assessment extends React.Component {
     const { displayModule, data, details } = this.state;
 
     let Modal1 = <div className='modal1'>
-  
+
       {data.map((item, index) => {
         return <iframe key={index} src={item.url} className='item'
           style={{
@@ -132,17 +176,23 @@ export default class Assessment extends React.Component {
             padding: '30px 0 0'
           }}></iframe>
       })}
-      
+
     </div>
 
     let Modal2 = <div className='Modal2'>
 
-      { !details && data.map((item, index) => {
+      {!details && data.map((item, index) => {
         return <div key={index} onClick={() => this.showModalDetails(item)}>
-        
+
           <div className='Modal2_item'>
             <div className='item_title'>{item.contract}</div>
+            <div className='time'>
+              <span>
+              {item.contractSignDate}
+              </span>
             <Icon type="right" color="#D2D2D2" />
+
+            </div>
           </div>
         </div>
       })
@@ -162,7 +212,7 @@ export default class Assessment extends React.Component {
           width: "100%",
           left: 0,
           right: 0,
-          bottom:0,
+          bottom: 0,
           zIndex: 100,
           fontSize: "18px",
           color: "#333333",
@@ -170,20 +220,23 @@ export default class Assessment extends React.Component {
       >
         {this.state.item.contract}
       </NavBar>
-      <iframe src={this.state.item.url}
+      {this.state.item.url && this.state.item.url != null ? <iframe src={this.state.item.url}
         style={{
           position: "fixed",
           top: 0,
           width: "100%",
           left: 0,
           right: 0,
-          bottom:0,
+          bottom: 0,
           zIndex: 90,
           width: window.screen.width,
-          height:window.screen.height,
+          height: window.screen.height,
           padding: '50px 0 0'
         }}
-      ></iframe>
+      ></iframe> : <div className='occupied'>
+          <img src={require('../src/assets/image/contract.png')} />
+          <div>合同正在努力迁移中，请您稍后再试......</div>
+        </div>}
     </div>
 
 
@@ -207,15 +260,16 @@ export default class Assessment extends React.Component {
             color: "#444D54",
             borderBottom: '1px solid #EEEEEE'
           }}
+          className='assessment_title'
         >
-          授信评估
+          我的合同
         </NavBar>
         {displayModule == 1 && Modal1}
         {displayModule == 2 && Modal2}
         {displayModule == 3 && Modal3}
         {details && m}
-        <ActivityIndicator toast animating={this.state.animating}/>
-        {this.state.animating&&<div className='loader_wrap'>
+        <ActivityIndicator toast animating={this.state.animating} />
+        {this.state.animating && <div className='loader_wrap'>
           <div className='loader_img'></div>
           <div className='loader_text'>加载中...</div>
         </div>}

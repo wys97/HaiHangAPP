@@ -38,6 +38,8 @@ module.exports = {
         updata: __dirname + "/src/updata.js",
         changePassword: __dirname + "/src/changePassword.js",
         creditSuccess: __dirname + "/src/creditSuccess.js",
+        hiDetails: __dirname + "/src/hiDetails.js",
+        supplementProtocol: __dirname + "/src/supplementProtocol.js",
     },
     output: {
         path: path.resolve(__dirname, 'dist'), // equal to __diname + '/build'

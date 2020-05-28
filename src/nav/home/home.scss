@@ -39,6 +39,9 @@
       height: 30px;
       padding: px2rem(9) 0;
     }
+    .slider-slide {
+      white-space: nowrap;
+    }
   }
 }
 .am-notice-bar {
@@ -236,6 +239,7 @@
         a {
           display: inline-block;
           width: px2rem(345);
+          height: px2rem(60);
 
           img {
             width: px2rem(345);

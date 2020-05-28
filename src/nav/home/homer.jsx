@@ -259,7 +259,7 @@ export default class Homer extends React.Component {
       <div>
         <div className="headers">
           <h1>您好！</h1>
-          <h3>欢迎使用海航钱包</h3>
+          <h3>欢迎使用航旅分期</h3>
         </div>
         <div className={this.state.notice}>
           <img

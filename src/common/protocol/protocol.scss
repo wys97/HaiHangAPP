@@ -4,6 +4,8 @@
 
 .declare_centent{
     padding-bottom: 100px;
+    line-height: 26px;
+    
 }
 
 .paymentProtocol{
@@ -22,55 +24,121 @@
 
   .agriculture{
       margin-top: 100px;
-      .content{
-          text-indent: 25px;
-      }
-      .weight{
-          font-weight: 900;
-      }
+ 
   }
 
   .attractInvestment{
       margin-top: 100px;
       line-height: 30px;
-      .content{
-        text-indent: 25px;
-    }
-    .weight{
-        font-weight: 900;
-    }
+  
   }
 
   .IndustryAndCommerce{
     margin-top: 100px;
     line-height: 30px;
-    .content{
-        text-indent: 25px;
-    }
-    .weight{
-        font-weight: 900;
-    }
+  
   }
 
   .construction{
     margin-top: 100px;
     line-height: 30px;
-    .content{
-        text-indent: 25px;
-    }
-    .weight{
-        font-weight: 900;
-    }
+ 
   }
 
 
   .BankOfChina{
     margin-top: 100px;
     line-height: 30px;
-    .content{
-        text-indent: 25px;
+  }
+  .content{
+    text-indent: 25px;
+}
+.weight{
+    font-weight: 900;
+}
+
+
+  .table{
+      width: 100%;
+      font-size: 12px;
+      border: 1px solid #000;
+      display: flex;
+      line-height: 16px;
+      flex-grow: 5;
+      .td{
+        width: 15%;
+      line-height: 16px;
+
     }
-    .weight{
-        font-weight: 900;
+    .th{
+        width: 20%;
+      line-height: 16px;
+      border-left: 1px solid #000;
+
     }
+    .tg{
+        width: 25%;
+      line-height: 16px;
+    }
+
+    .a1{
+        width: 100%;
+        height: 35px;
+        padding: 5px 5px;
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .aas{
+    border-top: 1px solid #000;
+    padding-top: 380px;
+    }
+    
+    .a2{
+        height: 160px;
+        padding: 5px 2px;
+       
+    border-top: 1px solid #000;
+    }
+    .a3{
+        height: 48px;
+        padding: 5px 2px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+
+    }
+    .a4{
+        height: 142px;
+        padding: 5px 2px;
+    border-bottom: 1px solid #000;
+
+    }
+    .a5{
+        height: 112px;
+        padding: 5px 2px;
+    border-bottom: 1px solid #000;
+
+    }
+    .a6{
+        height: 48px;
+        padding: 5px 2px;
+    border-bottom: 1px solid #000;
+
+    }
+    .a7{
+        height: 110px;
+        padding: 5px 2px;
+    border-bottom: 1px solid #000;
+
+    }
+    .a8{
+        height: 50px;
+        padding: 5px 2px;
+
+
+    }
+  }
+
+
+  .userAuthorization{
+      font-size: 14px;
   }

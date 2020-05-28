@@ -24,40 +24,60 @@ export default class HnaIous extends React.Component {
       // ProtocolType: 0,   //协议类型  1: 借款授信合同   2：海航白条机票分期业务注册协议
       toDisabled: true,
       timeText: "(3s)",
-      protocolData:'',
+      protocolData: '',
+      isNeed2SignCustomerAuth: false,
+      title: '个人借款额度合同',
+      showTitle: false,
     };
   }
 
   componentWillMount() {
     const that = this;
-    window.apiready = function() {
+    window.apiready = function () {
       that.setState({
         ajax: window.api.ajax
       });
-    that.gitProtocolData();
-      
+      that.gitProtocolData();
+      that.gitshowCustomer();
     };
   }
 
- 
 
-  gitProtocolData=()=>{
+
+  gitProtocolData = () => {
     let that = this;
     window.api.ajax({
-      url: getLink()+getApi('creditAgreementParam'),
+      url: getLink() + getApi('creditAgreementParam'),
       method: 'post',
       headers: {
         Apptoken: window.localStorage.Apptoken
       }
-  }, function(ret, err) {
-      if (ret.code=='200') {
-        
+    }, function (ret, err) {
+      if (ret.code == '200') {
+
         that.setState({
-          protocolData:ret.data
+          protocolData: ret.data
         })
       } else {
       }
-  });
+    });
+  }
+  gitshowCustomer = () => {
+    let that = this;
+    window.api.ajax({
+      url: getLink() + getApi('showCustomer'),
+      method: 'post',
+      headers: {
+        Apptoken: window.localStorage.Apptoken
+      }
+    }, function (ret, err) {
+      if (ret.code == '200') {
+        that.setState({
+          isNeed2SignCustomerAuth: ret.data.isNeed2SignCustomerAuth
+        })
+      } else {
+      }
+    });
   }
 
 
@@ -76,6 +96,10 @@ export default class HnaIous extends React.Component {
   };
 
   cLickRadio = value => {
+    setTimeout(() => {
+      let back = document.getElementsByClassName('back_content')[0];
+      back.removeEventListener('scroll', () => { })
+    }, 200)
     // console.log(value)
     //是否勾选已阅读协议
     if (value) {
@@ -97,6 +121,40 @@ export default class HnaIous extends React.Component {
       showProtocol: true,
       toDisabled: true
     });
+
+    setTimeout(() => {
+      let back = document.getElementsByClassName('back_content')[0];
+      let zation = document.getElementsByClassName('userAuthorization')[0];
+      if (back)
+        back.addEventListener('scroll', e => {
+          let offsetTop = e.target.offsetTop; //滚动条高度
+          let scrollTop = e.target.scrollTop; //滚动条到顶部的距离
+          let scrollHeight = e.target.scrollHeight; //元素的总高度
+          let zationOffsetTop =zation?zation.offsetTop:scrollHeight+100;
+
+          if (scrollTop >= offsetTop-15 && scrollTop < zationOffsetTop-25) {
+            this.setState({
+              showTitle: true,
+              title: '个人借款额度合同'
+            })
+          } else if (scrollTop >= zationOffsetTop-25 && scrollTop >offsetTop-25) {
+       
+            this.setState({
+              showTitle: true,
+              title: '用户授权委托书'
+            })
+          } else {
+            this.setState({
+              showTitle: false,
+              title: '个人借款额度合同'
+            })
+          }
+        })
+    }, 200)
+
+
+
+
     let timeo = 3;
     let timeStop = setInterval(() => {
       timeo--;
@@ -114,6 +172,7 @@ export default class HnaIous extends React.Component {
         clearInterval(timeStop); //清除定时器
       }
     }, 1000);
+
   };
 
   goBack = () => {
@@ -145,13 +204,7 @@ export default class HnaIous extends React.Component {
           海航白条
         </NavBar>
         <div style={{ height: "45px" }} />
-        <div className="banner"></div>
-        <div className="maxLimit">
-          <p>最高额度</p>
-          <span>￥3,000,000.00</span>
-          <div></div>
-          <b>保持海南航空良好乘机记录，将有助提升额度及获得授信</b>
-        </div>
+        <img src={require("./assets/image/hnaious.png")} alt="" className="banner"/>
         <div className="my-radio">
           {this.state.checked === false ? (
             <img
@@ -162,17 +215,17 @@ export default class HnaIous extends React.Component {
               }}
             />
           ) : (
-            <img
-              src={require("./assets/image/onClick.png")}
-              alt=""
-              onClick={() => {
-                this.cLickRadio(false);
-              }}
-            />
-          )}
+              <img
+                src={require("./assets/image/onClick.png")}
+                alt=""
+                onClick={() => {
+                  this.cLickRadio(false);
+                }}
+              />
+            )}
           <span>
             我已完全阅读并同意
-            <b onClick={() => this.showProtocol(1)}>《个人借款额度合同》</b>
+            <b onClick={() => this.showProtocol(1)}>《个人借款额度合同》{this.state.isNeed2SignCustomerAuth && <span>《用户授权委托书》</span>}</b>
           </span>
           {/* <p className="protocol" onClick={() => this.showProtocol(2)}>《海航白条机票分期业务注册协议》</p> */}
         </div>
@@ -183,15 +236,18 @@ export default class HnaIous extends React.Component {
         >
           立即获取额度
         </Button>
-        <Modal
-          popup
-          title="个人借款额度合同"
-          visible={this.state.showProtocol}
-          maskClosable
-          animationType="slide-up"
-        >
-          <div>
-            <div className="title">{protocol.loanContract(this.state.protocolData)}</div>
+       
+
+        {this.state.showProtocol &&
+          <div className='hint'>
+            <div className='back_wrap'>
+              {this.state.showTitle && <div className='back_title'>{this.state.title}</div>}
+              <div className='back_content'>
+                {protocol.loanContract(this.state.protocolData)}
+                {this.state.isNeed2SignCustomerAuth && protocol.userAuthorization}
+              </div>
+            </div>
+
             <div className="footer">
               <span
                 className="no"
@@ -215,7 +271,8 @@ export default class HnaIous extends React.Component {
               </Button>
             </div>
           </div>
-        </Modal>
+        }
+
       </div>
     );
   }

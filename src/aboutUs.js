@@ -47,7 +47,7 @@ export default class AboutUs extends React.Component {
       if (err) {
         //有报错
         window.api.openWin({
-          name: '海航钱包',
+          name: '航旅分期',
           url: 'https://www.jbhloan.com',
           rect: {
             x: 0,
@@ -118,7 +118,7 @@ export default class AboutUs extends React.Component {
           color: "#444D54"
         }}
       >
-        海航钱包服务协议
+        航旅分期服务协议
         </NavBar>
       <div className='serviceModule_content' >
         {protocol.serviceProtocol}
@@ -140,7 +140,7 @@ export default class AboutUs extends React.Component {
           color: "#444D54"
         }}
       >
-        海航钱包隐私协议
+        航旅分期隐私协议
         </NavBar>
       <div className='serviceModule_content' >
         {protocol.privacyProtocol}
@@ -220,11 +220,11 @@ export default class AboutUs extends React.Component {
         <div style={{ height: "45px" }} />
         <div className='content'>
           <div className='item' onClick={() => { this.showModule(1) }}>
-            <div className='title'>海航钱包服务协议</div>
+            <div className='title'>航旅分期服务协议</div>
             <img src={require("./assets/image/go.png")} />
           </div>
           <div className='item' onClick={() => { this.showModule(3) }}>
-            <div className='title'>海航钱包隐私协议</div>
+            <div className='title'>航旅分期隐私协议</div>
             <img src={require("./assets/image/go.png")} />
           </div>
           <div className='item' onClick={() => { this.showModule(2) }}>

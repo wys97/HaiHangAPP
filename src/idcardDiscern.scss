@@ -155,7 +155,10 @@
   line-height: 55px; 
 }
 
-
+.am-modal-alert-content{
+  height: 40px;
+  line-height: 40px;
+}
 
 .am-modal.am-modal-operation .am-modal-content .am-modal-button:nth-of-type(1){
   font-size:15px;
@@ -186,7 +189,7 @@
   width: 100%;
   top: 10px;
   height: 60px;
-  border-radius: 12px;
+  border-radius: 10px;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
 }

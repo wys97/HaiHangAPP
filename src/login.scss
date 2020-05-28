@@ -338,6 +338,38 @@ body{
       font-weight: bolder;
     }
   }
+  .overduePopUp {
+    height: 61.33vw;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 77.33vw;
+
+    .am-modal-content {
+      border-radius: 2vw;
+
+      .am-modal-body{
+        margin: 0 5.53vw;
+
+        h2{
+          margin: 6.93vw 0 6.77vw 0;
+          font-weight: bold;
+          padding: 1.1vw 0;
+        }
+        p{
+          font-size: 3.73vw;
+          text-align: left;
+          line-height: 5.33vw;
+
+          p{
+            margin-top: 1.6vw;
+          }
+        }
+      }
+    }
+}
 }
 .p {
   font-size: 14px;
@@ -349,12 +381,12 @@ body{
 
 // 图片验证码弹框
 .picture_wrap {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 99999;
   background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;

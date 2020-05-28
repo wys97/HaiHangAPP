@@ -2,16 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { getShowTitle } from "./loginToken";
 import { NavBar, Icon } from "antd-mobile";
+import openH5Link from "./openH5Link";
 import * as _ from "lodash";
-import "./amountDetail.scss";
-import amountDetailApi from "./api/home/home";
+import "./hiDetails.scss";
 import "./assets/reset.scss";
 import echarts from 'echarts/lib/echarts';
+
+
 import 'echarts/lib/chart/pie';
 import { getLink, getApi, getMenu } from "./linkConfig";
 
-export default class AmountDetail extends React.Component {
-  static displayName = "AmountDetail";
+export default class HiDetails extends React.Component {
+  static displayName = "hiDetails";
   static propTypes = {};
   static defaultProps = {};
 
@@ -49,8 +51,9 @@ export default class AmountDetail extends React.Component {
           avoidLabelOverlap: false,
           legendHoverLink: false,
           hoverAnimation: false,
+          clockwise:false,
           startAngle: 90,
-          color: ['#ffe8e8', '#E1514C'],
+          color: ['#ffe8e8','#E1514C'],
           labelLine: {
             normal: {
               show: false
@@ -78,9 +81,8 @@ export default class AmountDetail extends React.Component {
           }
         },
         function (ret, err) {
-          if (ret) {    
-            console.log(JSON.stringify(ret.data)) 
-            let data2 = (ret.data.availableCashLimitNumber / ret.data.availableLimitNumber)*100
+          if (ret.code=='200') {    
+            let data2 = (ret.data.hiAvailableCashLimitNumber / ret.data.hiTotalLimitNumber)*100;
             let data1 = 0;
             if(data2 === 100) {
               data1 = 0
@@ -93,7 +95,6 @@ export default class AmountDetail extends React.Component {
             let eCahrtData1 = { value: data1 };
             let eCahrtData2 = { value: data2 };
             let eCahrtData = [eCahrtData1, eCahrtData2];
-            console.log(JSON.stringify(eCahrtData))
             that.setState({
               data: ret.data,
               eCahrtData
@@ -110,10 +111,22 @@ export default class AmountDetail extends React.Component {
     }
   };
 
+
+  goWithdraw = ()=>{
+    const url = getMenu('支用');
+    const link = url + "?token=" + window.localStorage.h5Token + "&channel=cashLoanApp&type=2&productNo=PD003";
+    openH5Link(link);
+    setTimeout(()=>{
+      window.api.closeFrame({name:'hiDetails'});
+    },300)
+  }
+
+
+
   render() {
     return (
       <div
-        className="amountDetail"
+        className="hiDetails"
         style={{ minHeight: "100%", backgroundColor: "#FFF" }}
       >
         <NavBar
@@ -130,44 +143,25 @@ export default class AmountDetail extends React.Component {
             borderBottom: "1px solid #EFEFEF"
           }}
         >
-          授信额度
+          嗨贷授信额度
         </NavBar>
         <div className="creditPercent">
           <div id="main" style={{ width: 240, height: 240 }}></div>
           <div className="character">
             <p>可用额度(元)</p>
-            <span className="limit">{this.state.data.availableLimit}</span>
-            {/* <span >5,000.00</span> */}
-            <b>可提现{this.state.data.availableCashLimit}元</b>
-            {/* <b>可提现<span>2,000.00</span>元</b> */}
+            <span className="limit">{this.state.data.hiAvailableCashLimit}</span>
+            {/* <span className="limit">5,000.00</span> */}
+            <b>总额度{this.state.data.hiTotalLimit}元</b>
+            {/* <b>可提现<span>2,000,000.00</span>元</b> */}
           </div>
         </div>
-        <div className="blank"></div>
-        <div className="detailLimit">
-          <div className="detailLimit-title">
-            <div className='detailLimit-name'>总额度</div>
-            <div className='detailLimit-limit'>
-              <p className="availableLimit">{this.state.data.totalLimit}</p>
-              <p className="usedLimit">
-                可提现：<span>{this.state.data.availableCashLimit}</span>
-              </p>
-            </div>
-          </div>
-          <div className="detailLimit-title">
-            <div className='detailLimit-name'>已用额度</div>
-            <div className='detailLimit-limit'>
-              <p className="availableLimit">{this.state.data.usedLimit}</p>
-              <p className="usedLimit">
-                提现：<span>{this.state.data.usedCashLimit}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="goBack" onClick={() => { this.goBack() }}>
-          返回
+       
+        <div className="bottom" >
+          <div>授信有效期：截止到聚宝匯理财订单到期之前一个月</div>
+          <div className='goBack' onClick={this.goWithdraw}>去提现</div>
         </div>
       </div>
     );
   }
 }
-ReactDOM.render(<AmountDetail />, document.getElementById("amountDetail"));
+ReactDOM.render(<HiDetails />, document.getElementById("hiDetails"));

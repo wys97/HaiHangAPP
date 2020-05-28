@@ -129,11 +129,9 @@ export default class CreditInformation extends React.Component {
   };
 
   decide = () => {
-    console.log(this.state.companyName.length)
     //不能为空
     if (this.state.house !== "" && this.state.email !== "" && this.state.income !== "" && this.state.houseAddress.length > 5
-      && ((!/(^[\u4E00-\u9FA5]{2}$)|(^[a-zA-Z]{8,}$)/.test(this.state.companyName) && this.state.companyName.length >= 7)
-        || /(^[\u4E00-\u9FA5]{2}$)|(^[a-zA-Z]{8,}$)/.test(this.state.companyName))
+      && this.state.companyName!==''
     ) {
       this.setState({
         disabled: false
@@ -177,13 +175,35 @@ export default class CreditInformation extends React.Component {
     })
     this.decide()
   }
+
+  //判断字符长度
+  chkstrlen = (str) => {
+    var strlen = 0;
+    for (var i = 0; i < str.length; i++) {
+      if (str.charCodeAt(i) > 255) //如果是汉字，则字符串长度加2
+        strlen += 2;
+      else
+        strlen++;
+    }
+    return strlen
+
+  }
+
+
   companyNameOnChange = value => {
-    console.log(value)
     if (value) {
       this.setState({
         companyName: value,
       })
-      this.decide()
+      let strlen = this.chkstrlen(value);
+      if (strlen >= 8) {
+        this.decide()
+      }else{
+        this.setState({
+          disabled: true
+        })
+      }
+
     } else {
       this.setState({
         companyName: value,
@@ -194,12 +214,15 @@ export default class CreditInformation extends React.Component {
 
   }
   houseAddressOnChange = value => {
-    if (value.length > 5) {
+    if (value.length >= 6) {
       this.setState({
         houseAddress: value,
         addressError: "",
         hasErrors: false
-      }, () => { this.decide() })
+      })
+    
+        this.decide()
+      
 
     } else {
       this.setState({
@@ -246,8 +269,8 @@ export default class CreditInformation extends React.Component {
               }
             },
             function (ret, err) {
-              console.log("是否有联系人：" + JSON.stringify(ret))
-              if (ret.data.length > 1) {
+              // console.log("是否有联系人：" + JSON.stringify(ret))
+              if (ret.data.length >= 1) {
                 window.api.openFrame({
                   url: "./contactsList.html",
                   name: "contactsList",
@@ -300,7 +323,7 @@ export default class CreditInformation extends React.Component {
         dataType: "json",
       },
       function (ret, err) {
-        console.log(JSON.stringify(ret))
+        // console.log(JSON.stringify(ret))
         if (ret.code === "200") {
           setH5Token(ret.data);
         }
@@ -315,6 +338,7 @@ export default class CreditInformation extends React.Component {
   };
 
   render() {
+    let strlen = this.chkstrlen(this.state.companyName);
     return (
       <div
         className="creditInformation"
@@ -356,8 +380,7 @@ export default class CreditInformation extends React.Component {
           >
             单位名称
           </InputItem>
-          {this.state.companyName === "" || /(?=.*[\u4e00-\u9fa5]).{7,}/.test(this.state.companyName) || /(?=(.*[\u4e00-\u9fa5]){2}).{6,}/.test(this.state.companyName) || /(?=(.*[\u4e00-\u9fa5]){3}).{5,}/.test(this.state.companyName) || /(?=(.*[\u4e00-\u9fa5]){4,}|.{8,}).*/.test(this.state.companyName) ? null : <p className="error">至少4个中文字符或8个字符！</p>
-          }
+          {strlen >= 8 || strlen==0 ? null : <p className="error">至少4个中文字符或8个字符！</p> }
           <Picker
             data={this.state.data}
             cols={3}

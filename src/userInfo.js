@@ -31,6 +31,7 @@ export default class UserInfo extends React.Component {
       connectionFlag: false,
       visible: false,
       height: document.documentElement.clientHeight,
+      showBtn: false, //是否显示同步按钮
     };
   }
 
@@ -38,6 +39,7 @@ export default class UserInfo extends React.Component {
     const that = this;
     window.apiready = function () {
       that.getDate();
+      that.getisNeed2Sign();
     };
   }
   componentDidMount() {
@@ -49,6 +51,9 @@ export default class UserInfo extends React.Component {
         }),
       0
     );
+
+
+
   }
 
   refresh = () => {
@@ -227,40 +232,56 @@ export default class UserInfo extends React.Component {
   };
 
   logOut = () => {  //退出登录
-    alert("确定退出登录吗?","", [
+    alert("确定退出登录吗?", "", [
       { text: "取消", onPress: () => { } },
       {
         text: "确定",
         onPress: () => {
-          clearToken(),
-            clearH5Token(),
-            window.api.openFrame({
-              url: "./userInfo.html",
-              name: "userInfo",
-              reload: true,
-              rect: {
-                w: "auto",
-                marginTop: window.api.safeArea.top,
-                marginBottom: window.api.safeArea.bottom + 50
-              },
-              pageParam: {
-                isToken: false
-              },
-              useWKWebView: true,
-              historyGestureEnabled: true
-            });
-          window.api.closeFrame({ name: 'securitySet' })
-          window.api.closeFrame({ name: "creditResult" })
-          window.api.closeFrame({ name: "contactsList" })
-          window.api.closeFrame({ name: "addBankCard" })
-          window.api.closeFrame({ name: "addBankCardAuth" })
-          window.api.closeFrame({ name: "addBankPhone" })
-          window.api.closeFrame({ name: "amountDetail" })
-          window.api.closeFrame({ name: "creditInformation" })
-          window.api.closeFrame({ name: "contactsAdd" })
-          window.api.closeFrame({ name: "faceRecognition" })
-          window.api.closeFrame({ name: "idcardDiscern" })
-          window.api.closeFrame({ name: "hnaIous" })
+          window.api.ajax({
+            url: getLink() + getApi("loginout"),
+            method: "post",
+            dataType: "json",
+            headers: {
+              "Content-Type": "application/json",
+              Apptoken: window.localStorage.Apptoken
+            }
+          },
+            function (res, err) {
+              if (res.code == '200') {
+                clearToken(),
+                  clearH5Token(),
+                  window.api.openFrame({
+                    url: "./userInfo.html",
+                    name: "userInfo",
+                    reload: true,
+                    rect: {
+                      w: "auto",
+                      marginTop: window.api.safeArea.top,
+                      marginBottom: window.api.safeArea.bottom + 50
+                    },
+                    pageParam: {
+                      isToken: false
+                    },
+                    useWKWebView: true,
+                    historyGestureEnabled: true
+                  });
+                window.api.closeFrame({ name: 'securitySet' })
+                window.api.closeFrame({ name: "creditResult" })
+                window.api.closeFrame({ name: "contactsList" })
+                window.api.closeFrame({ name: "addBankCard" })
+                window.api.closeFrame({ name: "addBankCardAuth" })
+                window.api.closeFrame({ name: "addBankPhone" })
+                window.api.closeFrame({ name: "amountDetail" })
+                window.api.closeFrame({ name: "creditInformation" })
+                window.api.closeFrame({ name: "contactsAdd" })
+                window.api.closeFrame({ name: "faceRecognition" })
+                window.api.closeFrame({ name: "idcardDiscern" })
+                window.api.closeFrame({ name: "hnaIous" })
+              }
+
+            }
+          )
+
         }
       }
     ]);
@@ -332,11 +353,13 @@ export default class UserInfo extends React.Component {
 
 
   assessment = () => {
-    //进入授信评估
+
+
+    //进入我的合同
     let token = window.localStorage.Apptoken;
 
     if (token !== '') {
-      //授信评估
+      //我的合同
       let cashCreditStatus = this.state.creidt.cashCreditStatus
       if (cashCreditStatus === "" || cashCreditStatus === "NOCREDIT") {
         alert('未授信', '若需使用此功能，请先进行授信', [
@@ -370,7 +393,7 @@ export default class UserInfo extends React.Component {
             marginBottom: window.api.safeArea.bottom
           },
           useWKWebView: true,
-          historyGestureEnabled: true
+          historyGestureEnabled: true,
         })
       }
     } else {
@@ -438,6 +461,57 @@ export default class UserInfo extends React.Component {
     }
     // window.api.closeFrame({name:'userInfo'})
   };
+  synchronization = () => {
+    const that = this
+    //同步额度
+    let token = window.localStorage.Apptoken;
+    if (token == '') {
+      this.getuserInfo()
+    } else {
+      window.api.openFrame({
+        url: './hnaIous.html',
+        name: 'hnaIous',
+        rect: {
+          w: 'auto',
+          marginTop: window.api.safeArea.top,
+          marginBottom: window.api.safeArea.bottom
+        },
+        pageParam: {
+          securitySet: 'securitySet',
+        },
+        useWKWebView: true,
+        historyGestureEnabled: true
+      })
+    }
+    // window.api.closeFrame({name:'userInfo'})
+  };
+
+  getisNeed2Sign = () => {
+    const that = this;
+    if (window.api) {
+      window.api.ajax(
+        {
+          url: getLink() + getApi("isNeed2Sign"),
+          method: "get",
+          dataType: "json",
+          headers: {
+            "Content-Type": "application/json",
+            Apptoken: window.localStorage.Apptoken
+          }
+        },
+        function (ret, err) {
+
+          if (ret.code == "200") {
+            that.setState({
+              showBtn: ret.data.isNeed2Sign
+            });
+          }
+        }
+      );
+    }
+  };
+
+
 
   updata = () => {
     //版本更新
@@ -486,7 +560,7 @@ export default class UserInfo extends React.Component {
 
   render() {
     let data = this.state.data;
-    console.log(JSON.stringify(data))
+    let nickname = /^\d+$/.test(data.nickname);
     if (data.cardNumber.indexOf("A") !== -1) {
       data.cardNumber = "暂无"
     }
@@ -538,7 +612,7 @@ export default class UserInfo extends React.Component {
                 </div>
                 <div className="enter">
                   <p onClick={() => { this.personalSet() }}>
-                    {!/^\d+$/.test(data.nickname) ? '**' + data.nickname.substring(data.nickname.length - 1)
+                    {!nickname ? '**' + data.nickname.substring(data.nickname.length - 1)
                       : data.nickname.substring(0, 3) + '****' + data.nickname.substring(data.nickname.length - 3)
                     }
                   </p>
@@ -569,22 +643,22 @@ export default class UserInfo extends React.Component {
               )}
             {window.localStorage.Apptoken === '' ? (
               <Button
-                style={{ background: "#e1514c", borderRadius:'2px' }}
+                style={{ background: "#e1514c", borderRadius: '2px' }}
                 className="sgin"
                 onClick={this.getuserInfo}
               >
                 签到
-            </Button>
+              </Button>
             ) : data.status === false ? (
               <Button
-                style={{ background: "#e1514c",borderRadius:'2px' }}
+                style={{ background: "#e1514c", borderRadius: '2px' }}
                 className="sgin"
                 onClick={this.checkIn}
               >
                 签到
-            </Button>
+              </Button>
             ) : (
-                  <Button disabled style={{ background: "#d7d7d7", width: "auto",borderRadius:'2px' }} className="sgin">
+                  <Button disabled style={{ background: "#d7d7d7", width: "auto", borderRadius: '2px' }} className="sgin">
                     {seriesDay}
                   </Button>
                 )}
@@ -618,7 +692,7 @@ export default class UserInfo extends React.Component {
                 <Item arrow="horizontal" multipleLine onClick={this.assessment}>
                   <div className="size">
                     <img src={require("./assets/image/critd.png")} alt="" />
-                    <span>授信评估</span>
+                    <span>我的合同</span>
                   </div>
                 </Item>
                 <Item
@@ -667,6 +741,12 @@ export default class UserInfo extends React.Component {
                     <span>安全设置</span>
                   </div>
                 </Item>
+                {this.state.showBtn && <Item arrow="horizontal" multipleLine onClick={this.synchronization}>
+                  <div className="size">
+                    <img src={require("./assets/image/synchronization.png")} alt="" />
+                    <span>同步额度</span>
+                  </div>
+                </Item>}
                 <Item arrow="horizontal" multipleLine onClick={this.aboutUs}>
                   <div className="size">
                     <img src={require("./assets/image/withwe.png")} alt="" />

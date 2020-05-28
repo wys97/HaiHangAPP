@@ -12,6 +12,15 @@ export async function noticeShowtop(params) {
   });
 }
 /*
+ * 首页客户逾期信息查询
+ */
+export async function overdueDetail() {
+  return axiosService({
+    url: '/app-api/home/overdue-detail',
+    method: 'post',
+  });
+}
+/*
  * 额度信息
  */
 export async function limitDisplay() {
@@ -34,5 +43,6 @@ export async function limitDetail() {
 export default {
   noticeShowtop,
   limitDisplay,
-  limitDetail
+  limitDetail,
+  overdueDetail
 }

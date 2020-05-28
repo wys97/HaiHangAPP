@@ -11,7 +11,7 @@ import {
   PullToRefresh
 } from "antd-mobile";
 import "antd-mobile/dist/antd-mobile.css";
-import { getLink, getApi, getMenu, ticketOffice } from "./linkConfig";
+import { getLink, getApi, getMenu, ticketOffice, getBanner } from "./linkConfig";
 import { getH5Token, setH5Token, clearToken, clearH5Token } from "./loginToken";
 import homeApi from "./api/home/home";
 // import Homer from "./nav/home/homer";
@@ -33,10 +33,10 @@ export default class Home extends React.Component {
       closeFrame: null,
       ajax: null,
       refreshing: false,
-      slideshow: ["upOnline", "discount"],
+      // slideshow: ["upOnline", "discount"],
+      slideshow: getBanner(),
       notice: "notice",
       noticeList: [],
-      slideIndex: 0,
       creidt: {},
       privacyPolicy: "", //隐私协议状态
       declare: false, //隐私详情
@@ -45,15 +45,15 @@ export default class Home extends React.Component {
       permissionList: null,
       requestPermission: null,
       display: { display: "block" },
-      speech: ["欢迎使用海航钱包", "世界那么大 想去看看", "白条在手 说走就走"], //欢迎语数据
+      speech: ["欢迎使用航旅分期", "世界那么大 想去看看", "白条在手 说走就走"], //欢迎语数据
       ticket: false, //买机票模块
-      autoplay: true //公告栏是否轮播
+      autoplay: false, //公告栏是否轮播
     };
   }
 
   componentWillMount() {
     const that = this;
-    window.apiready = function() {
+    window.apiready = function () {
       that.getNoticeBoard();
       if (window.api.pageParam.isToken === false) {
         window.api.rmStorage("Apptoken");
@@ -63,7 +63,7 @@ export default class Home extends React.Component {
     //设置初始隐私协议状态
     let privacyPolicy =
       window.localStorage.getItem("privacyPolicy") !== undefined ||
-      window.localStorage.getItem("privacyPolicy") !== ""
+        window.localStorage.getItem("privacyPolicy") !== ""
         ? window.localStorage.getItem("privacyPolicy")
         : window.localStorage.setItem("privacyPolicy", "false");
 
@@ -84,11 +84,21 @@ export default class Home extends React.Component {
       if (res.data.code === "200") {
         this.setState({
           noticeList: res.data.data,
-          slideIndex: res.data.data.length - 1,
           notice: "notice"
         });
       }
     });
+  }
+
+  componentDidUpdate() {
+    if (this.state.autoplay === true) {
+      return
+    }
+    if (this.state.noticeList.length !== 0) {
+      this.setState({
+        autoplay: true
+      })
+    }
   }
 
   refresh = () => {
@@ -103,7 +113,7 @@ export default class Home extends React.Component {
         },
         dataType: "json"
       },
-      function(ret, err) {
+      function (ret, err) {
         console.log(JSON.stringify(ret));
         if (ret.code === "401") {
           clearToken();
@@ -128,8 +138,7 @@ export default class Home extends React.Component {
             "Content-Type": "application/json"
           }
         },
-        function(ret, err) {
-          console.log(JSON.stringify(ret));
+        function (ret, err) {
           if (ret.code === "200") {
             if (ret.data.length !== 0) {
               that.setState({
@@ -161,12 +170,12 @@ export default class Home extends React.Component {
             Apptoken: window.localStorage.Apptoken
           }
         },
-        function(ret, err) {
+        function (ret, err) {
           if (ret.code === "401") {
             clearToken();
             clearH5Token();
           }
-          console.log(JSON.stringify(ret));
+          console.log(JSON.stringify(ret))
           if (ret.code === "200") {
             that.setState({
               creidt: ret.data,
@@ -319,7 +328,7 @@ export default class Home extends React.Component {
       let cashCreditStatus = this.state.creidt.cashCreditStatus;
       if (cashCreditStatus === "" || cashCreditStatus === "NOCREDIT") {
         alert("未授信", "若需使用此功能，请先进行授信", [
-          { text: "取消", onPress: () => {} },
+          { text: "取消", onPress: () => { } },
           {
             text: "去授信",
             onPress: () => {
@@ -377,7 +386,7 @@ export default class Home extends React.Component {
   creditLimit = () => {
     if (this.state.creidt.availableCashLimit <= 900) {
       alert("", "最低提现金额1000元", [
-        { text: "确定", onPress: () => {} },
+        { text: "确定", onPress: () => { } },
         {
           text: "去提额",
           onPress: () => {
@@ -422,8 +431,8 @@ export default class Home extends React.Component {
 
   creditExpired = () => {
     alert("", "您的授信已过期重新授信后额度可提现及购买机票", [
-      { text: "取消", onPress: () => {} },
-      { text: "去授信", onPress: () => this.gocredit()}
+      { text: "取消", onPress: () => { } },
+      { text: "去授信", onPress: () => this.gocredit() }
     ]);
   };
 
@@ -436,7 +445,7 @@ export default class Home extends React.Component {
           950718
         </i>
       </p>,
-      [{ text: "确定", onPress: () => {} }]
+      [{ text: "确定", onPress: () => { } }]
     );
   };
 
@@ -448,7 +457,7 @@ export default class Home extends React.Component {
   };
 
   audit = () => {
-    alert("", "海航白条授信审核中", [{ text: "知道了", onPress: () => {} }]);
+    alert("", "海航白条授信审核中", [{ text: "知道了", onPress: () => { } }]);
   };
 
   creditFailure = () => {
@@ -551,10 +560,8 @@ export default class Home extends React.Component {
         uri: ticketOffice(),
         iosUrl: ticketOffice()
       },
-      function(ret, err) {
-        console.log(JSON.stringify(ret));
+      function (ret, err) {
         if (ret.msg === "未找到可执行的应用") {
-          console.log(333333333333);
         }
         if (err) {
           //有报错
@@ -570,6 +577,52 @@ export default class Home extends React.Component {
       }
     );
   };
+
+  // //banner打开浏览器
+  // bannerOpen = (url) => {
+  //   window.api.openApp({
+  //       androidPkg: "android.intent.action.VIEW",
+  //       mimeType: "text/html",
+  //       uri: url,
+  //       iosUrl: url
+  //     },
+  //     function (ret, err) {
+  //       if (ret.msg === "未找到可执行的应用") {
+  //       }
+  //       if (err) {
+  //         //有报错
+  //         window.api.openWin({
+  //           name: "海南航空",
+  //           url: url,
+  //           rect: {
+  //             x: 0,
+  //             y: 0
+  //           }
+  //         });
+  //       }
+  //     }
+  //   );
+  // };
+
+
+  //嗨贷详情
+  HiDetails = () => {
+    
+  
+    window.api.openFrame({
+      url: "./hiDetails.html",
+      name: "hiDetails",
+      rect: {
+        w: "auto",
+        marginTop: window.api.safeArea.top,
+        marginBottom: window.api.safeArea.bottom
+      },
+      useWKWebView: true,
+      historyGestureEnabled: true
+    });
+  }
+
+
 
   render() {
     //欢迎语
@@ -600,25 +653,25 @@ export default class Home extends React.Component {
       </div>
     );
 
-    //首页 海航钱包用户弹框
+    //首页 航旅分期用户弹框
     let privacyPolicy = (
       <div className="privacyPolicy">
         <div className="privacyPolicy_wrap">
-          <div className="privacyPolicy_title">亲爱的海航钱包用户</div>
+          <div className="privacyPolicy_title" style={{fontSize:'16px'}}>亲爱的航旅分期用户</div>
           <div className="privacyPolicy_content">
-            感谢您使用海航钱包！我们非常重视您的个人信息和隐私保护。为了更好地保障您的个人权利，
+            感谢您使用航旅分期！我们非常重视您的个人信息和隐私保护。为了更好地保障您的个人权利，
             在您使用我们的产品前，请您认真阅读
             <span
               className="privacyPolicy_details"
               onClick={() => this.setState({ declare: true })}
             >
-              《海航钱包隐私协议》、
+              《航旅分期隐私协议》
             </span>
             <span
               className="privacyPolicy_details"
               onClick={() => this.setState({ showProtocol: true })}
             >
-              《海航钱包服务协议》
+              《航旅分期服务协议》
             </span>
             的全部内容，同意并接受全部条款后开始使用我们的产品和服务。我们会严格按照政策内容使用和保护您的个人信息，感谢您的信任。
           </div>
@@ -641,7 +694,7 @@ export default class Home extends React.Component {
         {/* 《隐私声明》 详情*/}
         <Modal
           popup
-          title="海航钱包用户隐私协议"
+          title="航旅分期用户隐私协议"
           visible={this.state.declare}
           closable
           maskClosable
@@ -655,7 +708,7 @@ export default class Home extends React.Component {
         {/* 《海航白条服务协议》 详情*/}
         <Modal
           popup
-          title="海航钱包服务协议"
+          title="航旅分期服务协议"
           visible={this.state.showProtocol}
           closable
           maskClosable
@@ -743,9 +796,8 @@ export default class Home extends React.Component {
                       dots={false}
                       dragging={false}
                       swiping={false}
-                      // autoplay={this.state.autoplay}
+                      autoplay={this.state.autoplay}
                       infinite
-                      selectedIndex={this.state.slideIndex}
                     >
                       {this.state.noticeList.map((item, index) => (
                         <div
@@ -804,14 +856,14 @@ export default class Home extends React.Component {
                           元&nbsp;（可买机票）
                         </p>
                       ) : (
-                        <p
-                          className="creditInformation-limit"
-                          onClick={this.creidtDetail}
-                        >
-                          可用总额度
+                          <p
+                            className="creditInformation-limit"
+                            onClick={this.creidtDetail}
+                          >
+                            可用总额度
                           <span>{this.state.creidt.availableLimit}</span>元
                         </p>
-                      )}
+                        )}
                       <i className="enabled-i" onClick={this.creditLimit}>
                         立即提现
                       </i>
@@ -842,11 +894,11 @@ export default class Home extends React.Component {
                           元&nbsp;（可买机票）
                         </p>
                       ) : (
-                        <p className="creditInformation-limit">
-                          可用总额度
+                          <p className="creditInformation-limit">
+                            可用总额度
                           <span>{this.state.creidt.availableLimit}</span>元
                         </p>
-                      )}
+                        )}
                       <i onClick={this.disabled}>立即提现</i>
                       <span className="creditInformation-title">
                         <img
@@ -897,23 +949,33 @@ export default class Home extends React.Component {
                       </span>
                     </div>
                   ) : (
-                    //未授信状态
-                    <div className="creditInformation">
-                      <p className="creditInformation-header">
-                        海航白条最高可提现额度
-                      </p>
-                      <p className="creditInformation-sum">￥3,000,000.00</p>
-                      {this.state.creidt.isCashCredit === "PENDING" ? (
-                        <i onClick={this.audit}>立即提现</i>
-                      ) : (
-                        <i onClick={this.gocredit}>去授信</i>
-                      )}
-
-                      <span className="creditInformation-title">
-                        借1千元日费用最低至3毛
-                      </span>
+                      //未授信状态
+                      <div className="creditInformation">
+                        <p className="creditInformation-header"> 海航白条最高可提现额度</p>
+                        <p className="creditInformation-sum">￥3,000,000.00</p>
+                        {this.state.creidt.isCashCredit === "PENDING" ? (
+                          <i onClick={this.audit}>立即提现</i>
+                        ) : (
+                            <i onClick={this.gocredit}>去授信</i>
+                          )}
+                        <span className="creditInformation-title">借1千元日费用最低至3毛</span>
+                      </div>
+                    )
+                  }
+                  {this.state.creidt.isHiCredit=='PASSED'&&<div className='hi_wrap'>
+                    <div className='title'>
+                      <p className='yellow'></p>
+                      <p className='content'>嗨贷</p>
                     </div>
-                  )}
+                    <div className='money'>
+                <div className='usable_money'><p className='margin_r'>可提现额度</p><p>￥{this.state.creidt.hiAvailableCashLimit}</p></div>
+                      <div className='overall_money'><p className='margin_r'>总额度</p><p>￥{this.state.creidt.hiTotalLimit}</p></div>
+                    </div>
+                    <div className='details' onClick={this.HiDetails}>
+                      详情
+                      <img className='go_img' src={require("./assets/image/go.png")} />
+                    </div>
+                  </div>}
                   <div className="airlineTicket">
                     <ul>
                       <li>
@@ -949,9 +1011,10 @@ export default class Home extends React.Component {
                   <div className="banner">
                     <Carousel autoplay infinite>
                       {this.state.slideshow.map(val => (
-                        <a key={val} href="#">
+                        <a key={val.bannerUrl} href="#" >
                           <img
-                            src={require(`./assets/image/${val}.png`)}
+                            // src={require(`./assets/image/${val}.png`)}
+                            src={val.banner}
                             alt=""
                           />
                         </a>

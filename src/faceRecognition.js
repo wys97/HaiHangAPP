@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { getShowTitle, getToken, setH5Token } from "./loginToken";
+import { getH5Token, setH5Token, clearToken, clearH5Token,getShowTitle } from "./loginToken";
 import { Icon, NavBar, ActivityIndicator, Modal, Button, Toast } from "antd-mobile";
 import "./faceRecognition.scss";
 import "./assets/reset.scss";
@@ -42,7 +42,7 @@ class FaceRecognition extends React.Component {
     };
   }
   toAliveCheck = () => {
-    
+
     const that = this;
     const permission =
       this.state.hasPermission &&
@@ -70,79 +70,122 @@ class FaceRecognition extends React.Component {
             function (ret, err) {
               if (ret.code === "200") {
                 that.setState({
-                  animating:false
+                  animating: false
                 })
-                Toast.info(ret.message,3)
-                //是否有授信 
-            if(ret.data.creditCash){
-              window.api.openFrame({
-                name: "creditSuccess",
-                url: "./creditSuccess.html",
-                rect: {
-                  w: "auto",
-                  marginTop: window.api.safeArea.top,
-                  marginBottom: window.api.safeArea.bottom
-                },
-                useWKWebView: true,
-                historyGestureEnabled: true
-              });
-            }else{
-              //没有绑定还款账号
-              if (!ret.data.bindRepayBankCard) {
-                window.api.openFrame({
-                  name: "addBankCard",
-                  url: "./addBankCard.html",
-                  rect: {
-                    w: "auto",
-                    marginTop: window.api.safeArea.top,
-                    marginBottom: window.api.safeArea.bottom
-                  },    
-                  useWKWebView: true,
-                  historyGestureEnabled: true
-                });
-                //有协议绑卡 ，有还款计划  跳用户基本信息
-              } else if(ret.data.bindRepayBankCard && ret.data.agreementBindCard){
-                window.api.openFrame({
-                  name: "creditInformation",
-                  url: "./creditInformation.html",
-                  rect: {
-                    w: "auto",
-                    marginTop: window.api.safeArea.top,
-                    marginBottom: window.api.safeArea.bottom
+                Toast.info(ret.message, 3);
+                // 刷新token
+                window.api.ajax(
+                  {
+                    url: getLink() + getApi("updateToken"),
+                    method: "post",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Apptoken: window.localStorage.Apptoken
+                    },
+                    dataType: "json"
                   },
-                  useWKWebView: true,
-                  historyGestureEnabled: true
-                });
-                //有还款账号，没有协议绑卡跳协议绑卡
-              }else{
-                window.api.openFrame({
-                  name: "addBankPhone",
-                  url: "./addBankPhone.html",
-                  rect: {
-                    w: "auto",
-                    marginTop: window.api.safeArea.top,
-                    marginBottom: window.api.safeArea.bottom
-                  },
-                  pageParam:{
-                    cardNo:ret.data.bankCardNo
-                  },
-                  useWKWebView: true,
-                  historyGestureEnabled: true
-                });
-              }
-            }
+                  function (res, err) {
+
+                    if (res.code === "401") {
+                      clearToken();
+                      clearH5Token();
+                    }
+                    if (res.code === "200") {
+                      setH5Token(res.data);
+                      // 活体识别返回：现金贷已授信，嗨贷不管有没有授信，都提示弹窗【已将您的授信额度关联到新版系统！】(【确定】按钮)，
+                      // 点击确定按钮跳回首页刷新一下额度查询接口，
+                      // 2.2活体识别返回：现金贷未授信，嗨贷已授信，嗨贷同步字段为true，弹窗提示【已将您的嗨贷授信额度关联到新版系统！】
+                      // (【继续现金贷授信】/【取消】按钮)，继续现金贷授信就跳转现金贷授信的下一步骤，取消则返回首页
+                      // 2.3活体识别返回：现金贷未授信，嗨贷已授信，嗨贷同步字段为false，没有弹窗，继续授信
+                      // 2.4活体识别返回：现金贷未授信，嗨贷未授信，没有弹窗，正常授信。
+
+                      //是否补充协议
+                      // if (ret.data.isNeed2Sign) {
+                      //   window.api.openFrame({
+                      //     url: "./supplementProtocol.html",
+                      //     name: "supplementProtocol",
+                      //     rect: {
+                      //       w: "auto",
+                      //       marginTop: window.api.safeArea.top,
+                      //       marginBottom: window.api.safeArea.bottom
+                      //     },
+                      //     pageParam: {
+                      //       data: 'faceRecognition',
+                      //       from: ret.data
+                      //     },
+                      //     useWKWebView: true,
+                      //     historyGestureEnabled: true,
+
+                      //   });
+                      //   window.api.closeFrame({ name: "faceRecognition" });
+
+                      // } else 
+                      if (ret.data.creditCash=='HAVE_CREDIT' && ret.data.cashSync || (ret.data.creditCash=='CREDIT_EXPIRED' && ret.data.cashSync)) { //是否有授信 
+                        alert("", '已将您的授信额度关联到新版系统！', [
+                          {
+                            text: "确定", onPress: () => {
+                              window.api.openFrame({
+                                name: "index",
+                                url: "./index.html",
+                                rect: {
+                                  w: "auto",
+                                  marginTop: window.api.safeArea.top,
+                                  marginBottom: window.api.safeArea.bottom
+                                },
+                                reload: true,
+                                useWKWebView: true,
+                                historyGestureEnabled: true
+                              });
+                              window.api.closeFrame({ name: "faceRecognition" });
+                            }
+                          }
+                        ])
+                      } else if (ret.data.creditHra=='HAVE_CREDIT' && ret.data.hraSync || (ret.data.creditHra=='CREDIT_EXPIRED' && ret.data.hraSync)) { //嗨贷以授信，且第一次打开显示弹窗
+                        alert("", '已将您的嗨贷授信额度关联到新版系统！', [
+                          {
+                            text: "取消", onPress: () => {
+                              window.api.openFrame({
+                                name: "index",
+                                url: "./index.html",
+                                rect: {
+                                  w: "auto",
+                                  marginTop: window.api.safeArea.top,
+                                  marginBottom: window.api.safeArea.bottom
+                                },
+                                reload: true,
+                                useWKWebView: true,
+                                historyGestureEnabled: true
+                              });
+                              window.api.closeFrame({ name: "faceRecognition" });
+                            }
+                          },
+                          {
+                            text: "继续现金贷授信",
+                            onPress: () => {
+                              //现金贷授信跳转
+                              that.criteria(ret.data.agreementBindCard, ret.data.bindRepayBankCard, ret.data.bankCardNo)
+                            }
+                          }
+                        ])
+                      } else {
+                        that.criteria(ret.data.agreementBindCard, ret.data.bindRepayBankCard, ret.data.bankCardNo)
+                      }
+
+
+                    }
+                  })
 
               } else {
                 that.setState({
                   animating: false
                 })
                 if (err) {
-                  console.lof("报错:"+JSON.stringify(err))
-                  Toast.info("请求失败",3)
-               
+                  console.log("报错:" + JSON.stringify(err))
+                  Toast.info("请求失败", 3)
+
                 } else {
-                  Toast.info(ret.message,3)
-                
+                  Toast.info(ret.message, 3)
+
                 }
               }
               that.refresh()
@@ -152,11 +195,13 @@ class FaceRecognition extends React.Component {
     } else {
       // 申请权限
       alert("权限申请", '为保证您正常地使用此功能，需要获取您的相机使用权限，请允许。', [
-        { text: "返回", onPress: () => {
-          this.setState({
-            animating: false
-          })
-         } },
+        {
+          text: "返回", onPress: () => {
+            this.setState({
+              animating: false
+            })
+          }
+        },
         {
           text: "去允许",
           onPress: () => {
@@ -166,12 +211,61 @@ class FaceRecognition extends React.Component {
             this.state.requestPermission &&
               this.state.requestPermission({ list: ["camera"], code: 1 }, function (
                 ret
-              ) {});
+              ) { });
           }
         }
       ])
     }
   };
+
+  //现金贷授信跳转判断
+  criteria = (agreementBindCard, bindRepayBankCard, bankCardNo) => {
+    //没有绑定还款账号
+    if (!bindRepayBankCard) {
+      window.api.openFrame({
+        name: "addBankCard",
+        url: "./addBankCard.html",
+        rect: {
+          w: "auto",
+          marginTop: window.api.safeArea.top,
+          marginBottom: window.api.safeArea.bottom
+        },
+        useWKWebView: true,
+        historyGestureEnabled: true
+      });
+      //有协议绑卡 ，有还款计划  跳用户基本信息
+    } else if (bindRepayBankCard && agreementBindCard) {
+      window.api.openFrame({
+        name: "creditInformation",
+        url: "./creditInformation.html",
+        rect: {
+          w: "auto",
+          marginTop: window.api.safeArea.top,
+          marginBottom: window.api.safeArea.bottom
+        },
+        useWKWebView: true,
+        historyGestureEnabled: true
+      });
+      //有还款账号，没有协议绑卡跳协议绑卡
+    } else {
+      window.api.openFrame({
+        name: "addBankPhone",
+        url: "./addBankPhone.html",
+        rect: {
+          w: "auto",
+          marginTop: window.api.safeArea.top,
+          marginBottom: window.api.safeArea.bottom
+        },
+        pageParam: {
+          cardNo: bankCardNo
+        },
+        useWKWebView: true,
+        historyGestureEnabled: true
+      });
+    }
+  }
+
+
 
   refresh = () => {
     window.api.ajax( //刷新token
@@ -252,7 +346,7 @@ class FaceRecognition extends React.Component {
           开始检测
         </Button>
         <ActivityIndicator toast animating={this.state.animating} />
-        {this.state.animating&&<div className='loader_wrap'>
+        {this.state.animating && <div className='loader_wrap'>
           <div className='loader_img'></div>
           <div className='loader_text'>加载中...</div>
         </div>}

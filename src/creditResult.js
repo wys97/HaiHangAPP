@@ -81,7 +81,7 @@ export default class CreditResult extends React.Component {
             ip: returnCitySN["cip"],
             blackBox: window.localStorage.getItem('blackbox')
           }
-        }
+        } 
       },
       function (ret, err) {
         console.log("授信结果" + JSON.stringify(ret))
@@ -95,11 +95,12 @@ export default class CreditResult extends React.Component {
         } else {
           if (err) {
             Toast.info("请求失败",3)
-        
+            
           } else {
             Toast.info(ret.message,3)
 
           }
+          that.goBack()
         }
       }
     );
@@ -221,7 +222,7 @@ export default class CreditResult extends React.Component {
             alt=""
           />
           <h2>您的授信申请已提交</h2>
-          <p>审核结果预计会在3个工作日内以短信形式发送给您，<br />您也可以通过“海航钱包”APP查询额度信息</p>
+          <p>审核结果预计会在3个工作日内以短信形式发送给您，<br />您也可以通过“航旅分期”APP查询额度信息</p>
         </div>
 
         <Button className="next" onClick={this.getOk}>

@@ -1,0 +1,137 @@
+@import "./assets/px2rem.scss";
+.am-toast-notice-content .am-toast-text{
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+.content{
+    .title{
+        font-size: 14px;
+        color: #444D54;
+        letter-spacing: 0;
+        text-align: center;
+        line-height: 22px;
+        box-sizing: border-box;
+        padding: 80px 0 0;
+        height: 25%;
+        span{
+            color: #E1514C;
+        }
+    }
+    .protocol_wrap{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 45px 0px 75px;
+        background: #fff;
+        position: relative;
+        position: absolute;
+        bottom: 0;
+        height: 74%;
+        top: 25%;
+   
+    }
+  .protocol_title{
+      width: 100%;
+      height: 45px;
+      line-height: 45px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 800;
+  }
+    .protocol{
+        font-size: 14px;
+        background: #fff;
+        line-height: 20px;
+        letter-spacing: 1px;
+        padding: 0 15px;
+        overflow-y: scroll;
+        height: 100%;
+        padding-bottom: 20px;
+        h2{
+        padding: 0 0 20px 0;
+        font-size: 18px;
+        text-align: center;
+        font-weight: 800;
+        }
+        .weight{
+            font-weight: 800;
+        }
+        .indent{
+            text-indent: 26px;
+        }
+       
+    }
+    .footer{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 87px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 16px;
+        background-color: #fff;
+        width: 100%;
+      
+    }
+    .no{
+        border: 1px solid #979797;
+        height: 42px;
+        width: 161px;
+        line-height: 42px;
+        color: #444D54;
+        text-align: center;
+        padding-right: 16px;
+    }
+    .yes{
+        height: 44px;
+        width: 163px;
+        line-height: 44px;
+        background: #e1514c;
+        color: #fff;
+        border-radius: 0;
+        font-size: 16px;
+        text-align: center;
+        padding-right: 16px;
+        
+    }
+    .yes::before {
+        border: none !important;
+      }
+}
+
+
+.table{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 12px 0;
+    text-indent:0px;
+    tr{
+        border-bottom: 1px solid #999;
+        text-align: center;
+        th{
+            width: 24%;
+            word-wrap: break-word;
+            word-break: break-all;
+            overflow: hidden;
+            padding: 5px 2px;
+            border-left: 1px solid #999;
+        }
+        td{
+            width: 24%;
+            word-wrap: break-word;
+            word-break: break-all;
+            overflow: hidden;
+            padding: 5px 3px;
+            border-left: 1px solid #999;
+
+        }
+       
+    }
+  
+}
